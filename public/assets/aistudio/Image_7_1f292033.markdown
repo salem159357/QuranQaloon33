@@ -1,0 +1,214 @@
+---
+name: Sanad Slate
+colors:
+  surface: '#131313'
+  surface-dim: '#131313'
+  surface-bright: '#393939'
+  surface-container-lowest: '#0e0e0e'
+  surface-container-low: '#1b1b1c'
+  surface-container: '#202020'
+  surface-container-high: '#2a2a2a'
+  surface-container-highest: '#353535'
+  on-surface: '#e5e2e1'
+  on-surface-variant: '#bdcac2'
+  inverse-surface: '#e5e2e1'
+  inverse-on-surface: '#303030'
+  outline: '#87948d'
+  outline-variant: '#3e4944'
+  surface-tint: '#6fdab5'
+  primary: '#6fdab5'
+  on-primary: '#003829'
+  primary-container: '#4eba97'
+  on-primary-container: '#004634'
+  inverse-primary: '#006c52'
+  secondary: '#75daa8'
+  on-secondary: '#003823'
+  secondary-container: '#008056'
+  on-secondary-container: '#d1ffe3'
+  tertiary: '#f5bd6a'
+  on-tertiary: '#442b00'
+  tertiary-container: '#d39e4f'
+  on-tertiary-container: '#553700'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#8cf6d0'
+  primary-fixed-dim: '#6fdab5'
+  on-primary-fixed: '#002117'
+  on-primary-fixed-variant: '#00513d'
+  secondary-fixed: '#92f7c3'
+  secondary-fixed-dim: '#75daa8'
+  on-secondary-fixed: '#002113'
+  on-secondary-fixed-variant: '#005235'
+  tertiary-fixed: '#ffddb1'
+  tertiary-fixed-dim: '#f5bd6a'
+  on-tertiary-fixed: '#291800'
+  on-tertiary-fixed-variant: '#624000'
+  background: '#131313'
+  on-background: '#e5e2e1'
+  surface-variant: '#353535'
+typography:
+  headline-lg:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 30px
+    fontWeight: '700'
+    lineHeight: 38px
+  headline-lg-mobile:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 24px
+    fontWeight: '700'
+    lineHeight: 32px
+  headline-md:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 20px
+    fontWeight: '600'
+    lineHeight: 28px
+  headline-sm:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 16px
+    fontWeight: '600'
+    lineHeight: 24px
+  body-lg:
+    fontFamily: Inter
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+  body-md:
+    fontFamily: Inter
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 20px
+  body-sm:
+    fontFamily: Inter
+    fontSize: 12px
+    fontWeight: '400'
+    lineHeight: 18px
+  label-md:
+    fontFamily: Inter
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 16px
+  label-sm:
+    fontFamily: Inter
+    fontSize: 11px
+    fontWeight: '500'
+    lineHeight: 14px
+  mono-metric:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 16px
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  gutter: 1rem
+  gutter-sm: 0.75rem
+  margin: 1rem
+  margin-tablet: 1.5rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2rem
+---
+
+## Brand & Style
+
+The design system establishes a reverent, focused, and scholarly environment tailored for Quran memorization (*Hifz*), recitation tracking, and Halaqa circle administration. Built fundamentally around low-distraction utility during long study sessions, the aesthetic blends modern dark slate minimalism with traditional typographic dignity and full bi-directional support (LTR English / RTL Arabic).
+
+- **Brand Personality**: Disciplined, serene, scholarly, and supportive. It feels like an immaculate digital ledger or a sacred manuscript lit by soft ambient light.
+- **Target Audience**: Quran students (*Huffadh* candidates), Halaqa teachers (*Sheikhs* / mentors), and circle administrators handling student progress logs, recitation accuracy metrics, and attendance.
+- **Design Movement**: Elevated Dark Slate Minimalism. It relies on deep matte surfaces (`#121212`, `#1e1e1e`, `#2d2d2d`), subtle hairline borders, and vivid emerald-mint accents (`#4EBA97`) that signal achievement, active Surahs, and recitation validation without eye strain.
+
+## Colors
+
+The palette is tuned specifically for OLED and mobile screens under low-light study conditions, using true-slate layering instead of stark black-and-white.
+
+- **Canvas & Surfaces**:
+  - `Canvas / Background`: `#121212` (pure deep slate for battery preservation and high comfort).
+  - `Surface Level 1` (Cards, Sheets, Bars): `#1E1E1E` (foundational surface for list items and cards).
+  - `Surface Level 2` (Elevated modals, inner input fills, chips): `#2D2D2D`.
+  - `Border / Hairline Dividers`: `#383838` (controlled separation with zero harsh contrast).
+- **Accents**:
+  - `Primary Accent`: `#4EBA97` (Crisp mint teal used for active states, verified retention grades, and key call-to-actions).
+  - `Secondary Accent`: `#52B788` (Complementary lush emerald for progress bars, streak markers, and Quranic completion trackers).
+  - `Tertiary Accent`: `#D8A353` (Warm manuscript gold used strictly for Ayah markers, Tajweed callouts, and honors).
+  - `Semantic Critical / Alert`: `#E57373` (recitation error logging, missed revisions).
+- **Typography & Icons**:
+  - `Text Primary`: `#F5F5F5` (High-legibility off-white).
+  - `Text Secondary / Muted`: `#A0A0A0` (Meta labels, page references, Juz indices).
+  - `Text Tertiary / Disabled`: `#686868`.
+
+## Typography
+
+The typographic hierarchy prioritizes structural balance between clean contemporary Latin UI text, precise numeric trackers, and prominent Quranic Arabic glyphs.
+
+- **Latin Interface**: **Plus Jakarta Sans** provides a warm, modern, and authoritative tone for section headers, student names, and titles. **Inter** handles dense data grids, student rosters, and feedback text with maximum optical clarity.
+- **Metrics & Indices**: **JetBrains Mono** is allocated for Surah/Ayah counters (e.g., `002:255`), revision streak metrics, and timestamp tracking to prevent tabular jitter.
+- **Arabic Script & RTL Integration**:
+  - Arabic text inherits an Arabic-compatible system or web font (such as *Amiri Quran* or *Noto Naskh Arabic*) loaded alongside the system stack.
+  - Arabic text sizes scale at `1.2x` the equivalent Latin scale to account for complex diacritics (*Tashkeel*).
+  - Proper bidirectional mirroring (`dir="rtl"`) must invert layout directions, leading icons, list progression, and chevron arrows automatically.
+
+## Layout & Spacing
+
+The layout is built mobile-first, targeting Android and handheld devices with strict adherence to system overlays (status bars, edge-to-edge gestural navigation, and app bars).
+
+- **Grid Model**: A fluid 4-column layout on mobile devices (<600px) with `16px` (`1rem`) outer margins and `16px` gutters. Adapts to an 8-column layout on tablets with `24px` margins.
+- **System Chrome Adaptation**:
+  - Android Status Bar: `#121212` with light system icons (`android:lightStatusBar="false"`).
+  - Top App Bar: `56px` height fixed at the top surface (`#121212` or `#1E1E1E`), integrating a leading menu or back navigation, title, and trailing Halaqa filter actions.
+  - Android Bottom Navigation Bar: Floating or docked bottom bar with `64px` height on `#1E1E1E`, accounting for Android navigation gesture inset padding (`env(safe-area-inset-bottom)`).
+- **RTL Behavior**: In RTL contexts, gutters and margins mirror seamlessly. Margin-start maps to visual right, ensuring symmetrical spacing for students' Arabic names and recitation status badges.
+
+## Elevation & Depth
+
+Visual hierarchy does not rely on heavy drop shadows, which look muddy on dark OLED backgrounds. Depth is communicated through tonal layering combined with crisp hairline borders.
+
+- **Level 0 (Canvas)**: `#121212`. The infinite background for scrollable body areas.
+- **Level 1 (Cards, List Tiles, Header Shelves)**: `#1E1E1E` bordered with a 1px solid hairline of `#2D2D2D`. Provides clean physical separation between student cards and the canvas.
+- **Level 2 (Modals, Action Sheets, Context Menus)**: `#2D2D2D` with an ambient glow shadow: `0 8px 24px rgba(0, 0, 0, 0.55)` and a subtle `#383838` edge border.
+- **Interactive Depth & Focus**: Rather than dynamic elevation rises, active or selected states ignite a luminous hairline border using `rgba(78, 186, 151, 0.4)` (Primary Mint) with a soft inset tint `rgba(78, 186, 151, 0.05)`.
+
+## Shapes
+
+The design system employs a refined, rounded geometric profile (`roundedness: 2`). This balances the precision of an administrative ledger with the calming feel of an Islamic study sanctuary.
+
+- **Cards & Sheets**: `8px` (`0.5rem`) base border radius for student tiles, test evaluation panels, and bottom sheets.
+- **Containers & Inner Groups**: `8px` for recitation audio player controls and Surah selection rows.
+- **Chips, Badges, & Action Pills**: Fully rounded pill shapes (`9999px`) for tags such as "Sabaq" (new lesson), "Sabqi" (recent revision), and "Manzil" (cumulative retention), as well as Ayah index badges.
+- **Buttons**: `8px` for primary/secondary action buttons to maintain structure, avoiding toy-like full pills on wide touch targets.
+
+## Components
+
+### Buttons
+- **Primary Action**: Solid `#4EBA97` background with `#121212` bold text (`font-weight: 600`). Touch target minimum `48px` height. Hover/Pressed state: `#52B788`.
+- **Secondary Action**: `#2D2D2D` background, 1px `#383838` outline, `#F5F5F5` text.
+- **Icon Buttons (Android Material)**: 40x40px touch zone, center-aligned Material Symbols with `#A0A0A0` resting color, switching to `#4EBA97` on tap.
+
+### Student Memorization Cards
+- Base surface of `#1E1E1E` with a 1px `#2D2D2D` stroke.
+- Left-edge status indicator bar (Right-edge in RTL): A vertical 3px accent line indicating submission status (Green: *Passed/Mumtaz*, Gold: *Needs Revision*, Red: *Incomplete/Absent*).
+- Header row with student name in `headline-sm`, paired with a JetBrains Mono Ayah span badge (`Juz 3 • 002:188-202`).
+
+### Chips & Progress Badges
+- **Halaqa Task Badges**: Compact pills with `4px 10px` internal padding. 
+  - *Sabaq*: `#4EBA97` background at 15% opacity with solid `#4EBA97` text.
+  - *Sabqi*: `#52B788` background at 15% opacity with solid `#52B788` text.
+  - *Manzil*: `#D8A353` background at 15% opacity with solid `#D8A353` text.
+
+### Recitation Input Fields & Grade Pickers
+- **Input Fields**: Inactive fill `#1E1E1E`, active border `#4EBA97`. Label text placed in `label-sm` above the field in `#A0A0A0`.
+- **Retention Grade Selector**: Segmented control with 4 states (*Mumtaz / Excellent*, *Jayyid Jiddan / Very Good*, *Jayyid / Good*, *Da'eef / Needs Work*), utilizing `#2D2D2D` base with active segment switching to `#4EBA97` filled text and border.
+
+### Checkboxes & Radio Controls
+- Circular checks styled with 2px stroke in `#383838`. Selected state fills with `#4EBA97` displaying a `#121212` checkmark icon.
+
+### Android System Navigation Integration
+- Bottom navigation with 4 key destinations: *Halaqas*, *Students*, *Hifz Planner*, *Settings*. Icons use filled vs. outlined Material Symbols depending on active state.

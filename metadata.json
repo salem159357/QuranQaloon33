@@ -1,0 +1,6 @@
+{
+  "name": "Sanad Slate — Quran Hifz & Tajweed Tracker",
+  "description": "Quran memorization (Hifz), Tajweed error tracking, Mushaf Ayah annotation, and Halaqa student management app.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
