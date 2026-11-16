@@ -2,9 +2,14 @@ import React, { useMemo, useState } from 'react';
 import {
   ArrowUpDown,
   ChevronLeft,
+  MapPin,
+  Moon,
+  Pencil,
+  Phone,
   Plus,
   Printer,
   Search,
+  Sun,
   Trash2,
   User,
   UserPlus,
@@ -20,8 +25,11 @@ interface StudentsScreenProps {
   students: Student[];
   halaqas: Halaqa[];
   selectedStudentId: string;
+  appTheme: 'dark' | 'light';
+  onToggleAppTheme: () => void;
   onSelectStudent: (studentId: string) => void;
   onOpenAddStudent: () => void;
+  onEditStudent: (student: Student) => void;
   onRequestDeleteStudent: (student: Student) => void;
   onOpenProfileModal: () => void;
   onOpenReportModal: (halaqaFilter: string) => void;
@@ -31,8 +39,11 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
   students,
   halaqas,
   selectedStudentId,
+  appTheme,
+  onToggleAppTheme,
   onSelectStudent,
   onOpenAddStudent,
+  onEditStudent,
   onRequestDeleteStudent,
   onOpenProfileModal,
   onOpenReportModal,
@@ -58,6 +69,9 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
       const matchesQuery =
         !q ||
         s.name.toLowerCase().includes(q) ||
+        s.fatherName.toLowerCase().includes(q) ||
+        s.fatherPhone.toLowerCase().includes(q) ||
+        s.address.toLowerCase().includes(q) ||
         s.code.includes(q) ||
         s.riwayah.includes(q);
       return matchesHalaqa && matchesQuery;
@@ -115,57 +129,112 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
             onSelectStudent(student.id);
           }
         }}
-        className={`group flex items-center justify-between py-2.5 px-2 rounded-xl transition-colors cursor-pointer ${
+        className={`group flex items-center justify-between py-2.5 px-2.5 rounded-xl transition-colors cursor-pointer ${
           isSelected
-            ? 'bg-[#1b1b1c] ring-1 ring-[#6fdab5]/30'
-            : 'hover:bg-[#1b1b1c]/60'
+            ? 'bg-white dark:bg-[#1b1b1c] ring-1 ring-[#006c52]/35 dark:ring-[#6fdab5]/30 shadow-xs dark:shadow-none'
+            : 'hover:bg-white/80 dark:hover:bg-[#1b1b1c]/60'
         }`}
       >
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-9 h-9 rounded-full bg-[#1b1b1c] border border-[#2a2a2a] flex items-center justify-center shrink-0">
-            <span className="font-mono-metric text-[13px] font-semibold text-[#6fdab5]">
+        <div className="flex items-start gap-3 min-w-0 flex-1">
+          <div className="w-9 h-9 mt-0.5 rounded-full bg-[#eef2f0] dark:bg-[#1b1b1c] border border-[#d0dad6] dark:border-[#2a2a2a] flex items-center justify-center shrink-0">
+            <span className="font-mono-metric text-[13px] font-semibold text-[#006c52] dark:text-[#6fdab5]">
               {student.code}
             </span>
           </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[15px] font-semibold text-[#e5e2e1] truncate">
+              <span className="text-[15px] font-semibold text-[#141716] dark:text-[#e5e2e1] truncate">
                 {student.name}
               </span>
-              <span className="px-2 py-0.5 rounded-md bg-[#162922] border border-[#24473a] text-[#6fdab5] text-[11px] font-medium shrink-0">
+              <span className="px-2 py-0.5 rounded-md bg-[#e4f5ee] dark:bg-[#162922] border border-[#b7e2d1] dark:border-[#24473a] text-[#00513d] dark:text-[#6fdab5] text-[11px] font-medium shrink-0">
                 {student.riwayah}
               </span>
               <span
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#1e1e1f] border border-[#2d2d2e] text-[11px] font-semibold tabular-nums shrink-0"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#eef2f0] dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2d2d2e] text-[11px] font-semibold tabular-nums shrink-0"
                 title="مجموع الأخطاء (حفظ / تجويد)"
               >
-                <span className={err.total > 0 ? 'text-[#e5e2e1]' : 'text-[#87948d]'}>
+                <span
+                  className={
+                    err.total > 0
+                      ? 'text-[#141716] dark:text-[#e5e2e1]'
+                      : 'text-[#52605a] dark:text-[#87948d]'
+                  }
+                >
                   {err.total}
                 </span>
-                <span className="text-[#686868]">(</span>
-                <span className={err.hifz > 0 ? 'text-[#ffb4ab]' : 'text-[#87948d]'}>
+                <span className="text-[#9aa8a2] dark:text-[#686868]">(</span>
+                <span
+                  className={
+                    err.hifz > 0
+                      ? 'text-[#b91c1c] dark:text-[#ffb4ab]'
+                      : 'text-[#52605a] dark:text-[#87948d]'
+                  }
+                >
                   {err.hifz} حفظ
                 </span>
-                <span className="text-[#686868]">/</span>
-                <span className={err.tajweed > 0 ? 'text-[#f5bd6a]' : 'text-[#87948d]'}>
+                <span className="text-[#9aa8a2] dark:text-[#686868]">/</span>
+                <span
+                  className={
+                    err.tajweed > 0
+                      ? 'text-[#b45309] dark:text-[#f5bd6a]'
+                      : 'text-[#52605a] dark:text-[#87948d]'
+                  }
+                >
                   {err.tajweed} تجويد
                 </span>
-                <span className="text-[#686868]">)</span>
+                <span className="text-[#9aa8a2] dark:text-[#686868]">)</span>
               </span>
             </div>
-            {showHalaqaSubtitle && (
-              <p className="text-[11px] text-[#87948d] mt-0.5 truncate">
-                {halaqaNameById[student.halaqaId] ?? ''}
-              </p>
-            )}
+
+            {/* Father name, Age, Father phone & Address metadata line */}
+            <div className="mt-1 flex items-center flex-wrap gap-x-2.5 gap-y-0.5 text-[11px] text-[#52605a] dark:text-[#87948d]">
+              {showHalaqaSubtitle && (
+                <span className="font-medium text-[#006c52] dark:text-[#6fdab5]">
+                  {halaqaNameById[student.halaqaId] ?? ''}
+                </span>
+              )}
+              {student.fatherName && (
+                <span>الأب: {student.fatherName}</span>
+              )}
+              {student.age !== null && (
+                <span className="tabular-nums">{student.age} سنة</span>
+              )}
+              {student.fatherPhone && (
+                <span
+                  dir="ltr"
+                  className="inline-flex items-center gap-1 font-mono-metric text-[#3c4843] dark:text-[#bdcac2]"
+                >
+                  <Phone className="w-3 h-3 text-[#006c52] dark:text-[#6fdab5]" />
+                  <span>{student.fatherPhone}</span>
+                </span>
+              )}
+              {student.address && (
+                <span className="inline-flex items-center gap-1 truncate max-w-[220px]">
+                  <MapPin className="w-3 h-3 shrink-0 text-[#52605a] dark:text-[#87948d]" />
+                  <span className="truncate">{student.address}</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="flex items-center gap-0.5 shrink-0">
-          <span className="w-8 h-11 flex items-center justify-center text-[#bdcac2] group-hover:text-[#6fdab5] transition-colors">
+          <span className="w-7 h-10 flex items-center justify-center text-[#52605a] dark:text-[#bdcac2] group-hover:text-[#006c52] dark:group-hover:text-[#6fdab5] transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </span>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEditStudent(student);
+            }}
+            aria-label={`تعديل بيانات ${student.name}`}
+            title="تعديل بيانات الطالب"
+            className="w-9 h-10 rounded-lg flex items-center justify-center text-[#52605a] dark:text-[#87948d] hover:text-[#006c52] dark:hover:text-[#6fdab5] hover:bg-[#e4f5ee] dark:hover:bg-[#1d3129] transition-colors"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
           <button
             type="button"
             onClick={(e) => {
@@ -173,7 +242,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
               onRequestDeleteStudent(student);
             }}
             aria-label={`حذف ${student.name}`}
-            className="w-11 h-11 rounded-lg flex items-center justify-center text-[#87948d] hover:text-[#ffb4ab] hover:bg-[#3c1418]/40 transition-colors"
+            className="w-9 h-10 rounded-lg flex items-center justify-center text-[#52605a] dark:text-[#87948d] hover:text-[#b91c1c] dark:hover:text-[#ffb4ab] hover:bg-[#fde8ea] dark:hover:bg-[#3c1418]/40 transition-colors"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -183,20 +252,39 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#131313] text-[#e5e2e1] relative">
+    <div className="flex flex-col h-full bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] relative">
       {/* Top App Bar */}
-      <header className="h-14 px-4 flex items-center justify-between shrink-0 bg-[#131313]">
-        <h1 className="text-[20px] font-bold tracking-tight text-[#e5e2e1]">
+      <header className="h-14 px-4 flex items-center justify-between shrink-0 bg-[#f4f6f5] dark:bg-[#131313]">
+        <h1 className="text-[20px] font-bold tracking-tight text-[#141716] dark:text-[#e5e2e1]">
           قائمة الطلاب
         </h1>
 
         <div className="flex items-center gap-0.5">
           <button
             type="button"
+            onClick={onToggleAppTheme}
+            title={appTheme === 'dark' ? 'تفعيل رؤية نهار' : 'تفعيل الرؤية الليلية'}
+            aria-label={appTheme === 'dark' ? 'تفعيل رؤية نهار' : 'تفعيل الرؤية الليلية'}
+            className="h-9 px-2.5 rounded-full flex items-center gap-1.5 text-[12px] font-semibold bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2e2e30] text-[#006c52] dark:text-[#f5bd6a] hover:bg-[#eef2f0] dark:hover:bg-[#272729] active:scale-95 transition-all ml-1"
+          >
+            {appTheme === 'dark' ? (
+              <>
+                <Sun className="w-4 h-4" />
+                <span className="hidden sm:inline">نهار</span>
+              </>
+            ) : (
+              <>
+                <Moon className="w-4 h-4" />
+                <span className="hidden sm:inline">ليل</span>
+              </>
+            )}
+          </button>
+          <button
+            type="button"
             onClick={() => onOpenReportModal(activeHalaqaFilter)}
             title="طباعة تقرير"
             aria-label="طباعة تقرير"
-            className="w-10 h-10 rounded-full flex items-center justify-center text-[#bdcac2] hover:text-[#6fdab5] hover:bg-[#202020] active:scale-95 transition-all"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-[#3c4843] dark:text-[#bdcac2] hover:text-[#006c52] dark:hover:text-[#6fdab5] hover:bg-[#e7ecea] dark:hover:bg-[#202020] active:scale-95 transition-all"
           >
             <Printer className="w-5 h-5" />
           </button>
@@ -204,7 +292,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
             type="button"
             onClick={() => setShowTopSearch((prev) => !prev)}
             aria-label="بحث سريع"
-            className="w-10 h-10 rounded-full flex items-center justify-center text-[#e5e2e1] hover:bg-[#202020] active:scale-95 transition-all"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-[#141716] dark:text-[#e5e2e1] hover:bg-[#e7ecea] dark:hover:bg-[#202020] active:scale-95 transition-all"
           >
             <Search className="w-5 h-5" />
           </button>
@@ -212,7 +300,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
             type="button"
             onClick={onOpenAddStudent}
             aria-label="إضافة طالب"
-            className="w-10 h-10 rounded-full flex items-center justify-center text-[#e5e2e1] hover:bg-[#202020] active:scale-95 transition-all"
+            className="w-10 h-10 rounded-full flex items-center justify-center text-[#141716] dark:text-[#e5e2e1] hover:bg-[#e7ecea] dark:hover:bg-[#202020] active:scale-95 transition-all"
           >
             <Plus className="w-6 h-6" />
           </button>
@@ -220,7 +308,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
             type="button"
             onClick={onOpenProfileModal}
             aria-label="ملف المعلم"
-            className="w-9 h-9 mr-1 rounded-full bg-[#6fdab5] text-[#003829] flex items-center justify-center hover:bg-[#8cf6d0] active:scale-95 transition-all"
+            className="w-9 h-9 mr-1 rounded-full bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#003829] flex items-center justify-center hover:bg-[#005842] dark:hover:bg-[#8cf6d0] active:scale-95 transition-all"
           >
             <User className="w-5 h-5" strokeWidth={2.2} />
           </button>
@@ -230,20 +318,20 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
       {/* Search Field */}
       <div className={`px-4 pb-3 ${showTopSearch ? 'block' : 'block'}`}>
         <div className="relative flex items-center">
-          <Search className="w-4 h-4 text-[#87948d] absolute right-3.5 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#52605a] dark:text-[#87948d] absolute right-3.5 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="ابحث عن طالب..."
-            className="w-full h-11 bg-[#1b1b1c] border border-[#262626] focus:border-[#6fdab5] rounded-xl pr-10 pl-9 text-[14px] text-[#e5e2e1] placeholder-[#87948d] outline-none transition-colors"
+            placeholder="ابحث عن طالب، اسم الأب، الهاتف أو العنوان..."
+            className="w-full h-11 bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#262626] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-xl pr-10 pl-9 text-[14px] text-[#141716] dark:text-[#e5e2e1] placeholder-[#6e7b75] dark:placeholder-[#87948d] outline-none transition-colors"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
               aria-label="مسح البحث"
-              className="absolute left-2.5 w-7 h-7 flex items-center justify-center rounded-full text-[#87948d] hover:text-[#e5e2e1]"
+              className="absolute left-2.5 w-7 h-7 flex items-center justify-center rounded-full text-[#52605a] dark:text-[#87948d] hover:text-[#141716] dark:hover:text-[#e5e2e1]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -258,8 +346,8 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
           onClick={() => setActiveHalaqaFilter('all')}
           className={`h-9 px-3.5 rounded-full text-[13px] font-semibold flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors ${
             activeHalaqaFilter === 'all'
-              ? 'bg-[#6fdab5] text-[#002117]'
-              : 'bg-[#1b1b1c] text-[#e5e2e1]/90 border border-[#2a2a2a] hover:bg-[#242425]'
+              ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117]'
+              : 'bg-white dark:bg-[#1b1b1c] text-[#141716] dark:text-[#e5e2e1]/90 border border-[#d5deda] dark:border-[#2a2a2a] hover:bg-[#eef2f0] dark:hover:bg-[#242425]'
           }`}
         >
           <Users className="w-3.5 h-3.5" />
@@ -275,8 +363,8 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
               onClick={() => setActiveHalaqaFilter(halaqa.id)}
               className={`h-9 px-3.5 rounded-full text-[13px] font-medium whitespace-nowrap shrink-0 transition-colors ${
                 isActive
-                  ? 'bg-[#6fdab5] text-[#002117] font-semibold'
-                  : 'bg-[#1b1b1c] text-[#e5e2e1]/90 border border-[#2a2a2a] hover:bg-[#242425]'
+                  ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] font-semibold'
+                  : 'bg-white dark:bg-[#1b1b1c] text-[#141716] dark:text-[#e5e2e1]/90 border border-[#d5deda] dark:border-[#2a2a2a] hover:bg-[#eef2f0] dark:hover:bg-[#242425]'
               }`}
             >
               {halaqa.name}
@@ -287,7 +375,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
 
       {/* Sort Chips */}
       <div className="px-4 pb-3 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-        <span className="text-[11px] text-[#87948d] flex items-center gap-1 shrink-0 ml-1">
+        <span className="text-[11px] text-[#52605a] dark:text-[#87948d] flex items-center gap-1 shrink-0 ml-1">
           <ArrowUpDown className="w-3.5 h-3.5" />
           <span>ترتيب:</span>
         </span>
@@ -307,8 +395,8 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
               onClick={() => setSortMode(option.id)}
               className={`h-7 px-2.5 rounded-full text-[12px] whitespace-nowrap shrink-0 transition-colors ${
                 active
-                  ? 'bg-[#2a3f37] text-[#6fdab5] border border-[#6fdab5]/40 font-semibold'
-                  : 'bg-[#181819] text-[#a0a0a0] border border-[#262626] hover:text-[#e5e2e1]'
+                  ? 'bg-[#e4f5ee] dark:bg-[#2a3f37] text-[#00513d] dark:text-[#6fdab5] border border-[#006c52]/35 dark:border-[#6fdab5]/40 font-semibold'
+                  : 'bg-white dark:bg-[#181819] text-[#52605a] dark:text-[#a0a0a0] border border-[#d5deda] dark:border-[#262626] hover:text-[#141716] dark:hover:text-[#e5e2e1]'
               }`}
             >
               {option.label}
@@ -321,7 +409,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
       <div className="flex-1 overflow-y-auto px-4 pb-24 space-y-5">
         {sortedFlatStudents.length === 0 ? (
           <div className="py-16 text-center space-y-3">
-            <p className="text-[15px] font-medium text-[#bdcac2]">
+            <p className="text-[15px] font-medium text-[#3c4843] dark:text-[#bdcac2]">
               لا يوجد طلاب مطابقون للبحث الحالي
             </p>
             <button
@@ -331,7 +419,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
                 setActiveHalaqaFilter('all');
                 setSortMode('default');
               }}
-              className="px-4 py-2 rounded-lg bg-[#202020] border border-[#353535] text-[13px] text-[#6fdab5] hover:bg-[#2a2a2a]"
+              className="px-4 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#d5deda] dark:border-[#353535] text-[13px] text-[#006c52] dark:text-[#6fdab5] hover:bg-[#eef2f0] dark:hover:bg-[#2a2a2a]"
             >
               عرض جميع الطلاب
             </button>
@@ -340,29 +428,29 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
           groupedSections.map(({ halaqa, items }) => (
             <section key={halaqa.id} className="space-y-1.5">
               {/* Group Header */}
-              <div className="bg-[#1b1b1c] border border-[#252526] rounded-xl px-3.5 py-2.5 flex items-center justify-between">
+              <div className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#252526] rounded-xl px-3.5 py-2.5 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <span
-                    className="w-1 h-4 rounded-full bg-[#6fdab5] shrink-0"
+                    className="w-1 h-4 rounded-full bg-[#006c52] dark:bg-[#6fdab5] shrink-0"
                     aria-hidden="true"
                   />
-                  <h2 className="text-[14px] font-bold text-[#e5e2e1]">
+                  <h2 className="text-[14px] font-bold text-[#141716] dark:text-[#e5e2e1]">
                     {halaqa.groupLabel}
                   </h2>
                 </div>
-                <span className="text-[12px] text-[#87948d] tabular-nums">
+                <span className="text-[12px] text-[#52605a] dark:text-[#87948d] tabular-nums">
                   {items.length} {items.length === 1 ? 'طالب' : 'طلاب'}
                 </span>
               </div>
 
               {/* Student Rows */}
-              <div className="divide-y divide-[#1e1e1e]">
+              <div className="divide-y divide-[#e4eae7] dark:divide-[#1e1e1e]">
                 {items.map((student) => renderStudentRow(student, false))}
               </div>
             </section>
           ))
         ) : (
-          <div className="divide-y divide-[#1e1e1e]">
+          <div className="divide-y divide-[#e4eae7] dark:divide-[#1e1e1e]">
             {sortedFlatStudents.map((student) =>
               renderStudentRow(student, activeHalaqaFilter === 'all')
             )}
@@ -374,7 +462,7 @@ export const StudentsScreen: React.FC<StudentsScreenProps> = ({
       <button
         type="button"
         onClick={onOpenAddStudent}
-        className="absolute bottom-5 left-4 z-20 h-13 px-5 rounded-2xl bg-[#6fdab5] hover:bg-[#8cf6d0] active:scale-[0.98] text-[#002117] font-bold text-[14px] flex items-center gap-2 shadow-xl shadow-black/60 transition-all"
+        className="absolute bottom-5 left-4 z-20 h-13 px-5 rounded-2xl bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] active:scale-[0.98] text-white dark:text-[#002117] font-bold text-[14px] flex items-center gap-2 shadow-xl shadow-black/20 dark:shadow-black/60 transition-all"
       >
         <UserPlus className="w-5 h-5" strokeWidth={2.2} />
         <span>إضافة طالب</span>

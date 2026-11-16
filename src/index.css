@@ -10,8 +10,6 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #121212;
-    color: #e5e2e1;
     margin: 0;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
@@ -40,7 +38,7 @@
   scrollbar-width: none;
 }
 
-/* Custom subtle dark scrollbars for desktop panels */
+/* Custom subtle scrollbars for desktop panels */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -49,10 +47,16 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2e2e2e;
+  background: #c5ceca;
   border-radius: 9999px;
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: #2e2e2e;
+}
 ::-webkit-scrollbar-thumb:hover {
+  background: #9aa8a2;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #404040;
 }
 

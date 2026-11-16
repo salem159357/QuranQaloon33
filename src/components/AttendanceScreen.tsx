@@ -39,22 +39,26 @@ const STATUS_OPTIONS: {
   {
     id: 'present',
     label: 'حاضر',
-    activeClass: 'bg-[#6fdab5] text-[#002117] border-[#6fdab5] font-bold',
+    activeClass:
+      'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] border-[#006c52] dark:border-[#6fdab5] font-bold',
   },
   {
     id: 'late',
     label: 'متأخر',
-    activeClass: 'bg-[#f5bd6a] text-[#291800] border-[#f5bd6a] font-bold',
+    activeClass:
+      'bg-[#d97706] dark:bg-[#f5bd6a] text-white dark:text-[#291800] border-[#d97706] dark:border-[#f5bd6a] font-bold',
   },
   {
     id: 'excused',
     label: 'بعذر',
-    activeClass: 'bg-[#4b607f] text-[#eaf2ff] border-[#6d87ad] font-bold',
+    activeClass:
+      'bg-[#335c81] dark:bg-[#4b607f] text-white dark:text-[#eaf2ff] border-[#335c81] dark:border-[#6d87ad] font-bold',
   },
   {
     id: 'absent',
     label: 'غائب',
-    activeClass: 'bg-[#93000a] text-[#ffdad6] border-[#c43e44] font-bold',
+    activeClass:
+      'bg-[#b91c1c] dark:bg-[#93000a] text-white dark:text-[#ffdad6] border-[#b91c1c] dark:border-[#c43e44] font-bold',
   },
 ];
 
@@ -119,14 +123,16 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#131313] text-[#e5e2e1]">
+    <div className="flex flex-col h-full bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1]">
       {/* Header */}
-      <header className="h-14 px-4 flex items-center justify-between border-b border-[#202020] shrink-0">
-        <h1 className="text-[20px] font-bold text-[#e5e2e1]">تسجيل الحضور</h1>
+      <header className="h-14 px-4 flex items-center justify-between border-b border-[#d9e0dd] dark:border-[#202020] shrink-0">
+        <h1 className="text-[20px] font-bold text-[#141716] dark:text-[#e5e2e1]">
+          تسجيل الحضور
+        </h1>
         <button
           type="button"
           onClick={() => onOpenReportModal(halaqaFilter)}
-          className="h-9 px-3 rounded-lg bg-[#202020] hover:bg-[#2a2a2a] border border-[#353535] text-[12px] font-semibold text-[#6fdab5] flex items-center gap-1.5 transition-colors"
+          className="h-9 px-3 rounded-lg bg-white dark:bg-[#202020] hover:bg-[#eef2f0] dark:hover:bg-[#2a2a2a] border border-[#d5deda] dark:border-[#353535] text-[12px] font-semibold text-[#006c52] dark:text-[#6fdab5] flex items-center gap-1.5 transition-colors"
         >
           <Printer className="w-4 h-4" />
           <span>تقرير PDF</span>
@@ -134,24 +140,24 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
       </header>
 
       {/* Date Picker Bar */}
-      <div className="px-4 py-3 bg-[#171718] border-b border-[#222224] flex items-center justify-between gap-2 shrink-0">
+      <div className="px-4 py-3 bg-[#edf1ef] dark:bg-[#171718] border-b border-[#d9e0dd] dark:border-[#222224] flex items-center justify-between gap-2 shrink-0 flex-wrap">
         <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => shiftDay(-1)}
             aria-label="اليوم السابق"
-            className="w-9 h-9 rounded-lg bg-[#1e1e1f] border border-[#2d2d2f] flex items-center justify-center text-[#bdcac2] hover:text-[#e5e2e1]"
+            className="w-9 h-9 rounded-lg bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2d2d2f] flex items-center justify-center text-[#3c4843] dark:text-[#bdcac2] hover:text-[#141716] dark:hover:text-[#e5e2e1]"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
 
           <div className="relative flex items-center">
-            <Calendar className="w-4 h-4 text-[#6fdab5] absolute right-2.5 pointer-events-none" />
+            <Calendar className="w-4 h-4 text-[#006c52] dark:text-[#6fdab5] absolute right-2.5 pointer-events-none" />
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => e.target.value && onChangeDate(e.target.value)}
-              className="h-9 bg-[#1e1e1f] border border-[#2d2d2f] focus:border-[#6fdab5] rounded-lg pr-8 pl-2.5 font-mono-metric text-[13px] text-[#e5e2e1] outline-none"
+              className="h-9 bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2d2d2f] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-lg pr-8 pl-2.5 font-mono-metric text-[13px] text-[#141716] dark:text-[#e5e2e1] outline-none"
             />
           </div>
 
@@ -159,7 +165,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
             type="button"
             onClick={() => shiftDay(1)}
             aria-label="اليوم التالي"
-            className="w-9 h-9 rounded-lg bg-[#1e1e1f] border border-[#2d2d2f] flex items-center justify-center text-[#bdcac2] hover:text-[#e5e2e1]"
+            className="w-9 h-9 rounded-lg bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2d2d2f] flex items-center justify-center text-[#3c4843] dark:text-[#bdcac2] hover:text-[#141716] dark:hover:text-[#e5e2e1]"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -170,7 +176,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
             <button
               type="button"
               onClick={() => onChangeDate(todayISO)}
-              className="h-9 px-2.5 rounded-lg bg-[#1e1e1f] border border-[#2d2d2f] text-[12px] text-[#bdcac2] hover:text-[#6fdab5]"
+              className="h-9 px-2.5 rounded-lg bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#2d2d2f] text-[12px] text-[#3c4843] dark:text-[#bdcac2] hover:text-[#006c52] dark:hover:text-[#6fdab5]"
             >
               اليوم
             </button>
@@ -183,7 +189,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
                 selectedDate
               )
             }
-            className="h-9 px-3 rounded-lg bg-[#6fdab5] hover:bg-[#8cf6d0] text-[#002117] text-[12px] font-bold flex items-center gap-1.5 transition-colors whitespace-nowrap"
+            className="h-9 px-3 rounded-lg bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] text-white dark:text-[#002117] text-[12px] font-bold flex items-center gap-1.5 transition-colors whitespace-nowrap"
           >
             <CheckCheck className="w-4 h-4" />
             <span>تحضير الكل</span>
@@ -198,8 +204,8 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
           onClick={() => setHalaqaFilter('all')}
           className={`h-8 px-3 rounded-full text-[12px] font-semibold flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors ${
             halaqaFilter === 'all'
-              ? 'bg-[#6fdab5] text-[#002117]'
-              : 'bg-[#1b1b1c] text-[#e5e2e1]/90 border border-[#2a2a2a]'
+              ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117]'
+              : 'bg-white dark:bg-[#1b1b1c] text-[#141716] dark:text-[#e5e2e1]/90 border border-[#d5deda] dark:border-[#2a2a2a]'
           }`}
         >
           <Users className="w-3.5 h-3.5" />
@@ -213,8 +219,8 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
             onClick={() => setHalaqaFilter(h.id)}
             className={`h-8 px-3 rounded-full text-[12px] whitespace-nowrap shrink-0 transition-colors ${
               halaqaFilter === h.id
-                ? 'bg-[#6fdab5] text-[#002117] font-bold'
-                : 'bg-[#1b1b1c] text-[#e5e2e1]/90 border border-[#2a2a2a]'
+                ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] font-bold'
+                : 'bg-white dark:bg-[#1b1b1c] text-[#141716] dark:text-[#e5e2e1]/90 border border-[#d5deda] dark:border-[#2a2a2a]'
             }`}
           >
             {h.name}
@@ -224,29 +230,29 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
 
       {/* Daily Summary Metrics */}
       <div className="px-4 pb-3 grid grid-cols-4 gap-2 shrink-0">
-        <div className="bg-[#1b1b1c] border border-[#262626] rounded-xl py-2 px-2.5 text-center">
-          <p className="font-mono-metric text-[15px] font-bold text-[#6fdab5]">
+        <div className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#262626] rounded-xl py-2 px-2.5 text-center">
+          <p className="font-mono-metric text-[15px] font-bold text-[#006c52] dark:text-[#6fdab5]">
             {summary.present}
           </p>
-          <p className="text-[11px] text-[#a0a0a0]">حاضر</p>
+          <p className="text-[11px] text-[#52605a] dark:text-[#a0a0a0]">حاضر</p>
         </div>
-        <div className="bg-[#1b1b1c] border border-[#262626] rounded-xl py-2 px-2.5 text-center">
-          <p className="font-mono-metric text-[15px] font-bold text-[#f5bd6a]">
+        <div className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#262626] rounded-xl py-2 px-2.5 text-center">
+          <p className="font-mono-metric text-[15px] font-bold text-[#b45309] dark:text-[#f5bd6a]">
             {summary.late}
           </p>
-          <p className="text-[11px] text-[#a0a0a0]">متأخر</p>
+          <p className="text-[11px] text-[#52605a] dark:text-[#a0a0a0]">متأخر</p>
         </div>
-        <div className="bg-[#1b1b1c] border border-[#262626] rounded-xl py-2 px-2.5 text-center">
-          <p className="font-mono-metric text-[15px] font-bold text-[#9ab4d9]">
+        <div className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#262626] rounded-xl py-2 px-2.5 text-center">
+          <p className="font-mono-metric text-[15px] font-bold text-[#335c81] dark:text-[#9ab4d9]">
             {summary.excused}
           </p>
-          <p className="text-[11px] text-[#a0a0a0]">بعذر</p>
+          <p className="text-[11px] text-[#52605a] dark:text-[#a0a0a0]">بعذر</p>
         </div>
-        <div className="bg-[#1b1b1c] border border-[#262626] rounded-xl py-2 px-2.5 text-center">
-          <p className="font-mono-metric text-[15px] font-bold text-[#ffb4ab]">
+        <div className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#262626] rounded-xl py-2 px-2.5 text-center">
+          <p className="font-mono-metric text-[15px] font-bold text-[#b91c1c] dark:text-[#ffb4ab]">
             {summary.absent}
           </p>
-          <p className="text-[11px] text-[#a0a0a0]">غائب</p>
+          <p className="text-[11px] text-[#52605a] dark:text-[#a0a0a0]">غائب</p>
         </div>
       </div>
 
@@ -259,27 +265,28 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
           return (
             <div
               key={student.id}
-              className="bg-[#1b1b1c] border border-[#272729] rounded-xl p-3 space-y-2.5"
+              className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#272729] rounded-xl p-3 space-y-2.5"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-[#131313] border border-[#2a2a2a] flex items-center justify-center shrink-0">
-                    <span className="font-mono-metric text-[12px] font-semibold text-[#6fdab5]">
+                  <div className="w-8 h-8 rounded-full bg-[#eef2f0] dark:bg-[#131313] border border-[#d0dad6] dark:border-[#2a2a2a] flex items-center justify-center shrink-0">
+                    <span className="font-mono-metric text-[12px] font-semibold text-[#006c52] dark:text-[#6fdab5]">
                       {student.code}
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[14px] font-bold text-[#e5e2e1] truncate">
+                    <p className="text-[14px] font-bold text-[#141716] dark:text-[#e5e2e1] truncate">
                       {student.name}
                     </p>
-                    <p className="text-[11px] text-[#87948d]">
+                    <p className="text-[11px] text-[#52605a] dark:text-[#87948d]">
                       {halaqaNameById[student.halaqaId] ?? ''} · {student.riwayah}
+                      {student.fatherPhone ? ` · هاتف الأب: ${student.fatherPhone}` : ''}
                     </p>
                   </div>
                 </div>
 
                 {!currentStatus && (
-                  <span className="text-[11px] text-[#87948d] shrink-0">
+                  <span className="text-[11px] text-[#52605a] dark:text-[#87948d] shrink-0">
                     غير مسجل
                   </span>
                 )}
@@ -303,7 +310,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
                       className={`h-9 rounded-lg text-[12px] border transition-colors ${
                         isActive
                           ? opt.activeClass
-                          : 'bg-[#141415] border-[#29292b] text-[#bdcac2] hover:border-[#3e4944]'
+                          : 'bg-[#f4f6f5] dark:bg-[#141415] border-[#d5deda] dark:border-[#29292b] text-[#3c4843] dark:text-[#bdcac2] hover:border-[#006c52]/40 dark:hover:border-[#3e4944]'
                       }`}
                     >
                       {opt.label}
@@ -324,7 +331,7 @@ export const AttendanceScreen: React.FC<AttendanceScreenProps> = ({
                   )
                 }
                 placeholder="ملاحظة الجلسة (اختياري)..."
-                className="w-full h-8 bg-[#141415] border border-[#242426] focus:border-[#6fdab5] rounded-lg px-2.5 text-[12px] text-[#e5e2e1] placeholder-[#686868] outline-none"
+                className="w-full h-8 bg-[#f4f6f5] dark:bg-[#141415] border border-[#d5deda] dark:border-[#242426] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-lg px-2.5 text-[12px] text-[#141716] dark:text-[#e5e2e1] placeholder-[#6e7b75] dark:placeholder-[#686868] outline-none"
               />
             </div>
           );

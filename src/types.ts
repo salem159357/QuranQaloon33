@@ -38,6 +38,10 @@ export interface Student {
   id: string;
   code: string;
   name: string;
+  fatherName: string;
+  fatherPhone: string;
+  address: string;
+  age: number | null;
   halaqaId: string;
   riwayah: Riwayah;
   currentJuz: number;
@@ -86,6 +90,7 @@ export interface MushafPage {
 
 export interface AppSettings {
   defaultRiwayah: Riwayah;
+  appTheme: 'dark' | 'light';
   mushafTheme: 'parchment' | 'slate';
   teacherName: string;
   showAyahIndicators: boolean;

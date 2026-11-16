@@ -322,11 +322,11 @@ export const ReportModal: React.FC<ReportModalProps> = ({
   return (
     <>
       {/* Interactive Modal UI (hidden during @media print) */}
-      <div className="no-print fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
-        <div className="w-full max-w-4xl bg-[#18181a] border border-[#323236] rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
+      <div className="no-print fixed inset-0 z-50 bg-black/55 dark:bg-black/80 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
+        <div className="w-full max-w-4xl bg-white dark:bg-[#18181a] border border-[#d5deda] dark:border-[#323236] rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-[#141716] dark:text-[#e5e2e1]">
           {/* Modal Header */}
-          <div className="px-4 py-3 border-b border-[#28282b] flex items-center justify-between gap-2 shrink-0 flex-wrap">
-            <h2 className="text-[16px] sm:text-[17px] font-bold text-[#e5e2e1]">
+          <div className="px-4 py-3 border-b border-[#e4eae7] dark:border-[#28282b] flex items-center justify-between gap-2 shrink-0 flex-wrap">
+            <h2 className="text-[16px] sm:text-[17px] font-bold text-[#141716] dark:text-[#e5e2e1]">
               تقارير الحضور والحفظ (PDF)
             </h2>
             <div className="flex items-center gap-1.5 sm:gap-2">
@@ -334,7 +334,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                 type="button"
                 disabled={reportStudents.length === 0 || isGeneratingPdf}
                 onClick={handleExportPdf}
-                className="h-9 px-3.5 rounded-lg bg-[#6fdab5] hover:bg-[#8cf6d0] disabled:opacity-40 text-[#002117] text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5"
+                className="h-9 px-3.5 rounded-lg bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] disabled:opacity-40 text-white dark:text-[#002117] text-[12px] sm:text-[13px] font-bold flex items-center gap-1.5"
               >
                 {isGeneratingPdf ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -348,25 +348,25 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                 disabled={reportStudents.length === 0 || isGeneratingPdf}
                 onClick={handleSharePdf}
                 title="إرسال ملف PDF"
-                className="h-9 px-3 rounded-lg bg-[#242426] hover:bg-[#2f2f32] disabled:opacity-40 text-[12px] font-semibold text-[#e5e2e1] flex items-center gap-1.5"
+                className="h-9 px-3 rounded-lg bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2f2f32] disabled:opacity-40 text-[12px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center gap-1.5"
               >
-                <Share2 className="w-4 h-4 text-[#f5bd6a]" />
+                <Share2 className="w-4 h-4 text-[#b45309] dark:text-[#f5bd6a]" />
                 <span className="hidden sm:inline">إرسال PDF</span>
               </button>
               <button
                 type="button"
                 disabled={reportStudents.length === 0}
                 onClick={handlePrint}
-                className="h-9 px-3 rounded-lg bg-[#242426] hover:bg-[#2f2f32] disabled:opacity-40 text-[12px] font-semibold text-[#e5e2e1] flex items-center gap-1.5"
+                className="h-9 px-3 rounded-lg bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2f2f32] disabled:opacity-40 text-[12px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center gap-1.5"
               >
-                <Printer className="w-4 h-4 text-[#6fdab5]" />
+                <Printer className="w-4 h-4 text-[#006c52] dark:text-[#6fdab5]" />
                 <span className="hidden sm:inline">طباعة</span>
               </button>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="إغلاق"
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-[#a0a0a0] hover:bg-[#2a2a2c]"
+                className="w-9 h-9 rounded-lg flex items-center justify-center text-[#52605a] dark:text-[#a0a0a0] hover:bg-[#eef2f0] dark:hover:bg-[#2a2a2c]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -375,7 +375,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
 
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {pdfStatus && (
-              <div className="rounded-lg px-3 py-2 bg-[#162922] border border-[#2c5a3f] text-[#8cf6d0] text-[12px] font-medium">
+              <div className="rounded-lg px-3 py-2 bg-[#e4f5ee] dark:bg-[#162922] border border-[#b7e2d1] dark:border-[#2c5a3f] text-[#00513d] dark:text-[#8cf6d0] text-[12px] font-medium">
                 {pdfStatus}
               </div>
             )}
@@ -383,9 +383,9 @@ export const ReportModal: React.FC<ReportModalProps> = ({
             {/* Configuration Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Date Range & Sections */}
-              <div className="bg-[#1f1f21] border border-[#2d2d30] rounded-xl p-3.5 space-y-3">
+              <div className="bg-[#f4f6f5] dark:bg-[#1f1f21] border border-[#d5deda] dark:border-[#2d2d30] rounded-xl p-3.5 space-y-3">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <h3 className="text-[13px] font-bold text-[#6fdab5]">
+                  <h3 className="text-[13px] font-bold text-[#006c52] dark:text-[#6fdab5]">
                     1. المدة ومحتوى التقرير
                   </h3>
                   <div className="flex items-center gap-1">
@@ -401,7 +401,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                           setStartDate(offsetDaysISO(preset.days));
                           setEndDate(offsetDaysISO(0));
                         }}
-                        className="px-2 py-0.5 rounded bg-[#28282b] hover:bg-[#323236] text-[11px] text-[#bdcac2]"
+                        className="px-2 py-0.5 rounded bg-white hover:bg-[#e1e7e4] dark:bg-[#28282b] dark:hover:bg-[#323236] border border-[#d5deda] dark:border-transparent text-[11px] text-[#3c4843] dark:text-[#bdcac2]"
                       >
                         {preset.label}
                       </button>
@@ -411,25 +411,25 @@ export const ReportModal: React.FC<ReportModalProps> = ({
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                    <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                       من تاريخ
                     </label>
                     <input
                       type="date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full h-9 bg-[#131314] border border-[#323236] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#e5e2e1]"
+                      className="w-full h-9 bg-white dark:bg-[#131314] border border-[#d5deda] dark:border-[#323236] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#141716] dark:text-[#e5e2e1]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                    <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                       إلى تاريخ
                     </label>
                     <input
                       type="date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full h-9 bg-[#131314] border border-[#323236] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#e5e2e1]"
+                      className="w-full h-9 bg-white dark:bg-[#131314] border border-[#d5deda] dark:border-[#323236] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#141716] dark:text-[#e5e2e1]"
                     />
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                       type="checkbox"
                       checked={includeAttendance}
                       onChange={(e) => setIncludeAttendance(e.target.checked)}
-                      className="accent-[#6fdab5] w-4 h-4"
+                      className="accent-[#006c52] dark:accent-[#6fdab5] w-4 h-4"
                     />
                     <span>سجل الحضور</span>
                   </label>
@@ -449,21 +449,21 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                       type="checkbox"
                       checked={includeHifzResults}
                       onChange={(e) => setIncludeHifzResults(e.target.checked)}
-                      className="accent-[#6fdab5] w-4 h-4"
+                      className="accent-[#006c52] dark:accent-[#6fdab5] w-4 h-4"
                     />
                     <span>نتائج الحفظ والتجويد</span>
                   </label>
                 </div>
 
                 {includeHifzResults && (
-                  <label className="flex items-center gap-2 text-[12px] text-[#bdcac2] cursor-pointer">
+                  <label className="flex items-center gap-2 text-[12px] text-[#3c4843] dark:text-[#bdcac2] cursor-pointer">
                     <input
                       type="checkbox"
                       checked={filterErrorsByDateRange}
                       onChange={(e) =>
                         setFilterErrorsByDateRange(e.target.checked)
                       }
-                      className="accent-[#6fdab5] w-3.5 h-3.5"
+                      className="accent-[#006c52] dark:accent-[#6fdab5] w-3.5 h-3.5"
                     />
                     <span>احتساب أخطاء الحفظ والتجويد ضمن المدة المختارة فقط</span>
                   </label>
@@ -471,15 +471,15 @@ export const ReportModal: React.FC<ReportModalProps> = ({
               </div>
 
               {/* Group / Student Selection */}
-              <div className="bg-[#1f1f21] border border-[#2d2d30] rounded-xl p-3.5 space-y-2.5">
+              <div className="bg-[#f4f6f5] dark:bg-[#1f1f21] border border-[#d5deda] dark:border-[#2d2d30] rounded-xl p-3.5 space-y-2.5">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-[13px] font-bold text-[#6fdab5]">
+                  <h3 className="text-[13px] font-bold text-[#006c52] dark:text-[#6fdab5]">
                     2. مجموعة الطلاب ({selectedStudentIds.length})
                   </h3>
                   <select
                     value={halaqaFilter}
                     onChange={(e) => handleHalaqaChange(e.target.value)}
-                    className="h-8 bg-[#131314] border border-[#323236] rounded-lg px-2 text-[12px] text-[#e5e2e1]"
+                    className="h-8 bg-white dark:bg-[#131314] border border-[#d5deda] dark:border-[#323236] rounded-lg px-2 text-[12px] text-[#141716] dark:text-[#e5e2e1]"
                   >
                     <option value="all">جميع الحلقات</option>
                     {halaqas.map((h) => (
@@ -500,11 +500,13 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                         onClick={() => toggleStudent(s.id)}
                         className={`px-2.5 py-1 rounded-lg text-[12px] flex items-center gap-1.5 border transition-colors ${
                           checked
-                            ? 'bg-[#1a3a2f] border-[#6fdab5]/50 text-[#e5e2e1]'
-                            : 'bg-[#131314] border-[#2b2b2e] text-[#87948d]'
+                            ? 'bg-[#e4f5ee] dark:bg-[#1a3a2f] border-[#006c52]/40 dark:border-[#6fdab5]/50 text-[#00513d] dark:text-[#e5e2e1]'
+                            : 'bg-white dark:bg-[#131314] border-[#d5deda] dark:border-[#2b2b2e] text-[#52605a] dark:text-[#87948d]'
                         }`}
                       >
-                        {checked && <Check className="w-3 h-3 text-[#6fdab5]" />}
+                        {checked && (
+                          <Check className="w-3 h-3 text-[#006c52] dark:text-[#6fdab5]" />
+                        )}
                         <span>{s.name}</span>
                       </button>
                     );
@@ -515,9 +517,9 @@ export const ReportModal: React.FC<ReportModalProps> = ({
 
             {/* Surah Picker */}
             {includeHifzResults && (
-              <div className="bg-[#1f1f21] border border-[#2d2d30] rounded-xl p-3.5 space-y-2.5">
+              <div className="bg-[#f4f6f5] dark:bg-[#1f1f21] border border-[#d5deda] dark:border-[#2d2d30] rounded-xl p-3.5 space-y-2.5">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <h3 className="text-[13px] font-bold text-[#6fdab5]">
+                  <h3 className="text-[13px] font-bold text-[#006c52] dark:text-[#6fdab5]">
                     3. اختيار السور ({selectedSurahNumbers.length} سورة)
                   </h3>
                   <div className="flex items-center gap-1.5 flex-wrap">
@@ -526,12 +528,12 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                       value={surahSearch}
                       onChange={(e) => setSurahSearch(e.target.value)}
                       placeholder="بحث عن سورة..."
-                      className="h-8 w-32 bg-[#131314] border border-[#323236] rounded-lg px-2.5 text-[12px] text-[#e5e2e1] outline-none"
+                      className="h-8 w-32 bg-white dark:bg-[#131314] border border-[#d5deda] dark:border-[#323236] rounded-lg px-2.5 text-[12px] text-[#141716] dark:text-[#e5e2e1] outline-none"
                     />
                     <button
                       type="button"
                       onClick={selectSurahsWithErrors}
-                      className="h-8 px-2.5 rounded-lg bg-[#262629] text-[11px] text-[#f5bd6a]"
+                      className="h-8 px-2.5 rounded-lg bg-[#fef3dc] dark:bg-[#262629] text-[11px] font-medium text-[#854d0e] dark:text-[#f5bd6a]"
                     >
                       التي بها أخطاء
                     </button>
@@ -540,14 +542,14 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                       onClick={() =>
                         setSelectedSurahNumbers(SURAHS.map((s) => s.number))
                       }
-                      className="h-8 px-2.5 rounded-lg bg-[#262629] text-[11px] text-[#e5e2e1]"
+                      className="h-8 px-2.5 rounded-lg bg-white dark:bg-[#262629] border border-[#d5deda] dark:border-transparent text-[11px] text-[#141716] dark:text-[#e5e2e1]"
                     >
                       تحديد الكل
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedSurahNumbers([])}
-                      className="h-8 px-2.5 rounded-lg bg-[#262629] text-[11px] text-[#a0a0a0]"
+                      className="h-8 px-2.5 rounded-lg bg-white dark:bg-[#262629] border border-[#d5deda] dark:border-transparent text-[11px] text-[#52605a] dark:text-[#a0a0a0]"
                     >
                       إلغاء
                     </button>
@@ -564,8 +566,8 @@ export const ReportModal: React.FC<ReportModalProps> = ({
                         onClick={() => toggleSurah(s.number)}
                         className={`px-2.5 py-1 rounded-lg text-[12px] border transition-colors ${
                           active
-                            ? 'bg-[#6fdab5] text-[#002117] border-[#6fdab5] font-bold'
-                            : 'bg-[#131314] text-[#bdcac2] border-[#2c2c30]'
+                            ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] border-[#006c52] dark:border-[#6fdab5] font-bold'
+                            : 'bg-white dark:bg-[#131314] text-[#3c4843] dark:text-[#bdcac2] border-[#d5deda] dark:border-[#2c2c30]'
                         }`}
                       >
                         {s.number}. {s.nameArabic}
@@ -577,7 +579,7 @@ export const ReportModal: React.FC<ReportModalProps> = ({
             )}
 
             {/* Live White A4 Paper Preview (Also captured by html2canvas-pro for PDF) */}
-            <div className="rounded-xl overflow-x-auto border border-[#353535] bg-[#ffffff] text-[#111827]">
+            <div className="rounded-xl overflow-x-auto border border-[#d5deda] dark:border-[#353535] bg-[#ffffff] text-[#111827]">
               <div ref={pdfSheetRef} className="bg-[#ffffff] text-[#111827] p-6 sm:p-8 min-w-[680px]">
                 <ReportSheetContent
                   teacherName={teacherName}

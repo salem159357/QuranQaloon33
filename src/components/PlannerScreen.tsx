@@ -16,15 +16,18 @@ const GRADES: RetentionGrade[] = ['ممتاز', 'جيد جداً', 'جيد', 'ض
 const TASK_TYPE_LABEL: Record<HifzTask['type'], { label: string; classes: string }> = {
   sabaq: {
     label: 'السبق (حفظ جديد)',
-    classes: 'bg-[#4eba97]/15 text-[#6fdab5]',
+    classes:
+      'bg-[#e4f5ee] dark:bg-[#4eba97]/15 text-[#00513d] dark:text-[#6fdab5]',
   },
   sabqi: {
     label: 'السبقي (مراجعة قريبة)',
-    classes: 'bg-[#52b788]/15 text-[#75daa8]',
+    classes:
+      'bg-[#e6f4ea] dark:bg-[#52b788]/15 text-[#136f45] dark:text-[#75daa8]',
   },
   manzil: {
     label: 'المنزل (تثبيت قديم)',
-    classes: 'bg-[#d8a353]/15 text-[#f5bd6a]',
+    classes:
+      'bg-[#fef3dc] dark:bg-[#d8a353]/15 text-[#854d0e] dark:text-[#f5bd6a]',
   },
 };
 
@@ -65,13 +68,15 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#131313] text-[#e5e2e1]">
-      <header className="h-14 px-4 flex items-center justify-between border-b border-[#202020] shrink-0">
-        <h1 className="text-[20px] font-bold text-[#e5e2e1]">خطة الحفظ والمراجعة</h1>
+    <div className="flex flex-col h-full bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1]">
+      <header className="h-14 px-4 flex items-center justify-between border-b border-[#d9e0dd] dark:border-[#202020] shrink-0">
+        <h1 className="text-[20px] font-bold text-[#141716] dark:text-[#e5e2e1]">
+          خطة الحفظ والمراجعة
+        </h1>
         <button
           type="button"
           onClick={() => setShowAddForm((prev) => !prev)}
-          className="h-9 px-3.5 rounded-lg bg-[#6fdab5] hover:bg-[#8cf6d0] text-[#002117] text-[13px] font-bold flex items-center gap-1.5 transition-colors"
+          className="h-9 px-3.5 rounded-lg bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] text-white dark:text-[#002117] text-[13px] font-bold flex items-center gap-1.5 transition-colors"
         >
           <Plus className="w-4 h-4" />
           <span>إضافة ورد</span>
@@ -79,14 +84,14 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
       </header>
 
       {/* Student Filter Pills */}
-      <div className="px-4 py-3 flex items-center gap-2 overflow-x-auto no-scrollbar border-b border-[#1d1d1e] shrink-0">
+      <div className="px-4 py-3 flex items-center gap-2 overflow-x-auto no-scrollbar border-b border-[#d9e0dd] dark:border-[#1d1d1e] shrink-0">
         <button
           type="button"
           onClick={() => setSelectedStudentFilter('all')}
           className={`h-8 px-3 rounded-full text-[12px] whitespace-nowrap shrink-0 transition-colors ${
             selectedStudentFilter === 'all'
-              ? 'bg-[#6fdab5] text-[#002117] font-bold'
-              : 'bg-[#1b1b1c] text-[#bdcac2] border border-[#2a2a2a]'
+              ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] font-bold'
+              : 'bg-white dark:bg-[#1b1b1c] text-[#3c4843] dark:text-[#bdcac2] border border-[#d5deda] dark:border-[#2a2a2a]'
           }`}
         >
           كل الطلاب ({tasks.length})
@@ -98,8 +103,8 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
             onClick={() => setSelectedStudentFilter(s.id)}
             className={`h-8 px-3 rounded-full text-[12px] whitespace-nowrap shrink-0 transition-colors ${
               selectedStudentFilter === s.id
-                ? 'bg-[#6fdab5] text-[#002117] font-bold'
-                : 'bg-[#1b1b1c] text-[#bdcac2] border border-[#2a2a2a]'
+                ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] font-bold'
+                : 'bg-white dark:bg-[#1b1b1c] text-[#3c4843] dark:text-[#bdcac2] border border-[#d5deda] dark:border-[#2a2a2a]'
             }`}
           >
             {s.name}
@@ -111,20 +116,20 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
         {showAddForm && (
           <form
             onSubmit={handleCreate}
-            className="bg-[#1b1b1c] border border-[#3e4944] rounded-xl p-4 space-y-3"
+            className="bg-white dark:bg-[#1b1b1c] border border-[#006c52]/40 dark:border-[#3e4944] rounded-xl p-4 space-y-3"
           >
-            <h2 className="text-[14px] font-bold text-[#6fdab5]">
+            <h2 className="text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5]">
               تعيين ورد حفظ أو مراجعة جديد
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   الطالب
                 </label>
                 <select
                   value={newStudentId}
                   onChange={(e) => setNewStudentId(e.target.value)}
-                  className="w-full h-10 bg-[#131313] border border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#e5e2e1] outline-none focus:border-[#6fdab5]"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131313] border border-[#d5deda] dark:border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#141716] dark:text-[#e5e2e1] outline-none focus:border-[#006c52] dark:focus:border-[#6fdab5]"
                 >
                   {students.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -134,13 +139,13 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   نوع الورد
                 </label>
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as HifzTask['type'])}
-                  className="w-full h-10 bg-[#131313] border border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#e5e2e1] outline-none focus:border-[#6fdab5]"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131313] border border-[#d5deda] dark:border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#141716] dark:text-[#e5e2e1] outline-none focus:border-[#006c52] dark:focus:border-[#6fdab5]"
                 >
                   <option value="sabaq">السبق (حفظ جديد)</option>
                   <option value="sabqi">السبقي (مراجعة قريبة)</option>
@@ -148,13 +153,13 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   السورة
                 </label>
                 <select
                   value={newSurah}
                   onChange={(e) => setNewSurah(Number(e.target.value))}
-                  className="w-full h-10 bg-[#131313] border border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#e5e2e1] outline-none focus:border-[#6fdab5]"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131313] border border-[#d5deda] dark:border-[#2f2f2f] rounded-lg px-3 text-[13px] text-[#141716] dark:text-[#e5e2e1] outline-none focus:border-[#006c52] dark:focus:border-[#6fdab5]"
                 >
                   {SURAHS.map((s) => (
                     <option key={s.number} value={s.number}>
@@ -164,14 +169,14 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   نطاق الآيات
                 </label>
                 <input
                   type="text"
                   value={newRange}
                   onChange={(e) => setNewRange(e.target.value)}
-                  className="w-full h-10 bg-[#131313] border border-[#2f2f2f] rounded-lg px-3 font-mono-metric text-[13px] text-[#e5e2e1] outline-none focus:border-[#6fdab5]"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131313] border border-[#d5deda] dark:border-[#2f2f2f] rounded-lg px-3 font-mono-metric text-[13px] text-[#141716] dark:text-[#e5e2e1] outline-none focus:border-[#006c52] dark:focus:border-[#6fdab5]"
                 />
               </div>
             </div>
@@ -179,13 +184,13 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="h-9 px-3.5 rounded-lg bg-[#2a2a2a] text-[13px] text-[#e5e2e1]"
+                className="h-9 px-3.5 rounded-lg bg-[#eef2f0] dark:bg-[#2a2a2a] text-[13px] text-[#141716] dark:text-[#e5e2e1]"
               >
                 إلغاء
               </button>
               <button
                 type="submit"
-                className="h-9 px-4 rounded-lg bg-[#6fdab5] text-[#002117] text-[13px] font-bold"
+                className="h-9 px-4 rounded-lg bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] text-[13px] font-bold"
               >
                 حفظ الورد
               </button>
@@ -201,7 +206,7 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
           return (
             <div
               key={task.id}
-              className="bg-[#1b1b1c] border border-[#2a2a2a] rounded-xl p-3.5 space-y-3"
+              className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-3.5 space-y-3"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-3">
@@ -211,8 +216,8 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                     aria-label="تحديد كمكتمل"
                     className={`w-6 h-6 mt-0.5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                       task.completed
-                        ? 'bg-[#6fdab5] border-[#6fdab5] text-[#002117]'
-                        : 'border-[#4a4a4a] hover:border-[#6fdab5]'
+                        ? 'bg-[#006c52] dark:bg-[#6fdab5] border-[#006c52] dark:border-[#6fdab5] text-white dark:text-[#002117]'
+                        : 'border-[#9aa8a2] dark:border-[#4a4a4a] hover:border-[#006c52] dark:hover:border-[#6fdab5]'
                     }`}
                   >
                     {task.completed && <Check className="w-3.5 h-3.5" strokeWidth={3} />}
@@ -221,15 +226,15 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                     <p
                       className={`text-[14px] font-bold ${
                         task.completed
-                          ? 'line-through text-[#87948d]'
-                          : 'text-[#e5e2e1]'
+                          ? 'line-through text-[#6e7b75] dark:text-[#87948d]'
+                          : 'text-[#141716] dark:text-[#e5e2e1]'
                       }`}
                     >
                       {student?.name ?? 'طالب'}
                     </p>
-                    <p className="text-[12px] text-[#a0a0a0] mt-0.5">
+                    <p className="text-[12px] text-[#52605a] dark:text-[#a0a0a0] mt-0.5">
                       {surah?.nameArabic} ·{' '}
-                      <span className="font-mono-metric text-[#bdcac2]">
+                      <span className="font-mono-metric text-[#3c4843] dark:text-[#bdcac2]">
                         الجزء {task.juz} • {task.ayahRange}
                       </span>
                     </p>
@@ -244,7 +249,7 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
               </div>
 
               {/* Retention Grade Segmented Selector */}
-              <div className="grid grid-cols-4 gap-1 p-1 rounded-lg bg-[#141415] border border-[#252526]">
+              <div className="grid grid-cols-4 gap-1 p-1 rounded-lg bg-[#eef2f0] dark:bg-[#141415] border border-[#d5deda] dark:border-[#252526]">
                 {GRADES.map((grade) => {
                   const active = task.grade === grade;
                   return (
@@ -254,8 +259,8 @@ export const PlannerScreen: React.FC<PlannerScreenProps> = ({
                       onClick={() => onChangeGrade(task.id, grade)}
                       className={`h-8 rounded-md text-[11px] font-semibold transition-colors ${
                         active
-                          ? 'bg-[#6fdab5] text-[#002117]'
-                          : 'text-[#a0a0a0] hover:text-[#e5e2e1]'
+                          ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117]'
+                          : 'text-[#52605a] dark:text-[#a0a0a0] hover:text-[#141716] dark:hover:text-[#e5e2e1]'
                       }`}
                     >
                       {grade}

@@ -10,8 +10,9 @@ import { AttendanceScreen } from './components/AttendanceScreen';
 import { HalaqasScreen } from './components/HalaqasScreen';
 import {
   AddHalaqaModal,
-  AddStudentModal,
   ConfirmDeleteModal,
+  StudentFormModal,
+  StudentFormPayload,
 } from './components/Modals';
 import { MushafScreen } from './components/MushafScreen';
 import { PlannerScreen } from './components/PlannerScreen';
@@ -66,6 +67,7 @@ export default function App() {
   );
 
   const [showAddStudent, setShowAddStudent] = useState(false);
+  const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
   const [showAddHalaqa, setShowAddHalaqa] = useState(false);
   const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
   const [showProfileBanner, setShowProfileBanner] = useState(false);
@@ -73,6 +75,11 @@ export default function App() {
     open: boolean;
     initialHalaqaId: string;
   }>({ open: false, initialHalaqaId: 'all' });
+
+  // Sync Tailwind dark mode class on <html>
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', settings.appTheme === 'dark');
+  }, [settings.appTheme]);
 
   // Initialize on-device SQLite (sql.js + IndexedDB binary store)
   useEffect(() => {
@@ -175,17 +182,17 @@ export default function App() {
     }
   };
 
-  const handleAddStudent = (data: {
-    name: string;
-    halaqaId: string;
-    riwayah: Riwayah;
-  }) => {
+  const handleAddStudent = (data: StudentFormPayload) => {
     const nextNumber = students.length + 1;
     const code = String(nextNumber).padStart(2, '0');
     const newStudent: Student = {
       id: `student-${Date.now()}`,
       code,
       name: data.name,
+      fatherName: data.fatherName,
+      fatherPhone: data.fatherPhone,
+      address: data.address,
+      age: data.age,
       halaqaId: data.halaqaId,
       riwayah: data.riwayah,
       currentJuz: 1,
@@ -197,6 +204,27 @@ export default function App() {
     setSelectedStudentId(newStudent.id);
     if (repoRef.current) {
       void repoRef.current.upsertStudent(newStudent).then(refreshStats);
+    }
+  };
+
+  const handleEditStudent = (studentId: string, data: StudentFormPayload) => {
+    const existing = students.find((s) => s.id === studentId);
+    if (!existing) return;
+    const updatedStudent: Student = {
+      ...existing,
+      name: data.name,
+      fatherName: data.fatherName,
+      fatherPhone: data.fatherPhone,
+      address: data.address,
+      age: data.age,
+      halaqaId: data.halaqaId,
+      riwayah: data.riwayah,
+    };
+    setStudents((prev) =>
+      prev.map((s) => (s.id === studentId ? updatedStudent : s))
+    );
+    if (repoRef.current) {
+      void repoRef.current.upsertStudent(updatedStudent).then(refreshStats);
     }
   };
 
@@ -336,12 +364,16 @@ export default function App() {
   };
 
   const handleUpdateSettings = (patch: Partial<AppSettings>) => {
-    setSettings((prev) => {
-      const next = { ...prev, ...patch };
-      if (repoRef.current) {
-        void repoRef.current.saveSettings(next).then(refreshStats);
-      }
-      return next;
+    const next = { ...settings, ...patch };
+    setSettings(next);
+    if (repoRef.current) {
+      void repoRef.current.saveSettings(next).then(refreshStats);
+    }
+  };
+
+  const handleToggleAppTheme = () => {
+    handleUpdateSettings({
+      appTheme: settings.appTheme === 'dark' ? 'light' : 'dark',
     });
   };
 
@@ -466,8 +498,11 @@ export default function App() {
         students={students}
         halaqas={halaqas}
         selectedStudentId={selectedStudent?.id ?? ''}
+        appTheme={settings.appTheme}
+        onToggleAppTheme={handleToggleAppTheme}
         onSelectStudent={handleSelectStudent}
         onOpenAddStudent={() => setShowAddStudent(true)}
+        onEditStudent={(student) => setStudentToEdit(student)}
         onRequestDeleteStudent={(student) => setStudentToDelete(student)}
         onOpenProfileModal={() => setShowProfileBanner((prev) => !prev)}
         onOpenReportModal={(halaqaFilter) =>
@@ -497,24 +532,29 @@ export default function App() {
   }, [activeMushafPageNumber, activeMushafPage]);
 
   return (
-    <div dir="rtl" className="min-h-screen w-full bg-[#0e0e0e] text-[#e5e2e1]">
+    <div
+      dir="rtl"
+      className="min-h-screen w-full bg-[#e9eeec] dark:bg-[#0e0e0e] text-[#141716] dark:text-[#e5e2e1] transition-colors"
+    >
       {/* Interactive App Shell (hidden during print) */}
       <div className="no-print">
         {showProfileBanner && (
-          <div className="fixed top-16 left-4 right-4 sm:left-auto sm:right-6 sm:w-80 z-50 bg-[#1e1e1f] border border-[#3e4944] rounded-xl p-3.5 shadow-2xl flex items-center justify-between gap-3">
+          <div className="fixed top-16 left-4 right-4 sm:left-auto sm:right-6 sm:w-80 z-50 bg-white dark:bg-[#1e1e1f] border border-[#d5deda] dark:border-[#3e4944] rounded-xl p-3.5 shadow-2xl flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] text-[#6fdab5] font-semibold">المشرف الحالي</p>
-              <p className="text-[14px] font-bold text-[#e5e2e1] mt-0.5">
+              <p className="text-[11px] text-[#006c52] dark:text-[#6fdab5] font-semibold">
+                المشرف الحالي
+              </p>
+              <p className="text-[14px] font-bold text-[#141716] dark:text-[#e5e2e1] mt-0.5">
                 {settings.teacherName}
               </p>
-              <p className="text-[11px] text-[#a0a0a0] mt-0.5">
+              <p className="text-[11px] text-[#52605a] dark:text-[#a0a0a0] mt-0.5">
                 {halaqas.length} حلقات · {students.length} طلاب
               </p>
             </div>
             <button
               type="button"
               onClick={() => setShowProfileBanner(false)}
-              className="px-2.5 py-1 rounded-lg bg-[#2a2a2a] text-[12px] text-[#e5e2e1]"
+              className="px-2.5 py-1 rounded-lg bg-[#eef2f0] dark:bg-[#2a2a2a] text-[12px] text-[#141716] dark:text-[#e5e2e1]"
             >
               حسناً
             </button>
@@ -522,7 +562,7 @@ export default function App() {
         )}
 
         {/* Unified Single-Screen App View (Mobile & Desktop) */}
-        <div className="flex flex-col h-dvh w-full max-w-4xl mx-auto bg-[#131313] lg:border-x lg:border-[#242424] overflow-hidden">
+        <div className="flex flex-col h-dvh w-full max-w-4xl mx-auto bg-[#f4f6f5] dark:bg-[#131313] lg:border-x lg:border-[#d5deda] dark:lg:border-[#242424] overflow-hidden">
           <main className="flex-1 min-h-0 overflow-hidden">
             {activeTab === 'students' && mobileRoute === 'mushaf' && selectedStudent ? (
               <MushafScreen
@@ -555,7 +595,7 @@ export default function App() {
           {(activeTab !== 'students' || mobileRoute === 'list') && (
             <nav
               aria-label="التنقل الرئيسي"
-              className="h-16 bg-[#1b1b1c] border-t border-[#262626] grid grid-cols-5 items-center shrink-0 pb-[env(safe-area-inset-bottom)]"
+              className="h-16 bg-white dark:bg-[#1b1b1c] border-t border-[#d5deda] dark:border-[#262626] grid grid-cols-5 items-center shrink-0 pb-[env(safe-area-inset-bottom)]"
             >
               {navItems.map((item) => {
                 const active = activeTab === item.id;
@@ -570,7 +610,9 @@ export default function App() {
                       }
                     }}
                     className={`h-full flex flex-col items-center justify-center gap-1 transition-colors ${
-                      active ? 'text-[#6fdab5]' : 'text-[#87948d] hover:text-[#e5e2e1]'
+                      active
+                        ? 'text-[#006c52] dark:text-[#6fdab5]'
+                        : 'text-[#52605a] dark:text-[#87948d] hover:text-[#141716] dark:hover:text-[#e5e2e1]'
                     }`}
                   >
                     {item.icon}
@@ -584,11 +626,21 @@ export default function App() {
 
         {/* Modals */}
         {showAddStudent && (
-          <AddStudentModal
+          <StudentFormModal
             halaqas={halaqas}
             defaultRiwayah={settings.defaultRiwayah}
             onClose={() => setShowAddStudent(false)}
             onSubmit={handleAddStudent}
+          />
+        )}
+
+        {studentToEdit && (
+          <StudentFormModal
+            halaqas={halaqas}
+            defaultRiwayah={settings.defaultRiwayah}
+            initialStudent={studentToEdit}
+            onClose={() => setStudentToEdit(null)}
+            onSubmit={(data) => handleEditStudent(studentToEdit.id, data)}
           />
         )}
 

@@ -166,6 +166,10 @@ class Student {
   final String id;
   final String code;
   final String name;
+  final String fatherName;
+  final String fatherPhone;
+  final String address;
+  final int? age;
   final String halaqaId;
   final String riwayah;
   final int currentJuz;
@@ -176,6 +180,10 @@ class Student {
     required this.id,
     required this.code,
     required this.name,
+    this.fatherName = '',
+    this.fatherPhone = '',
+    this.address = '',
+    this.age,
     required this.halaqaId,
     required this.riwayah,
     this.currentJuz = 1,
@@ -187,6 +195,10 @@ class Student {
         'id': id,
         'code': code,
         'name': name,
+        'father_name': fatherName,
+        'father_phone': fatherPhone,
+        'address': address,
+        'age': age,
         'halaqa_id': halaqaId,
         'riwayah': riwayah,
         'current_juz': currentJuz,
@@ -198,6 +210,10 @@ class Student {
         id: map['id'] as String,
         code: map['code'] as String,
         name: map['name'] as String,
+        fatherName: (map['father_name'] as String?) ?? '',
+        fatherPhone: (map['father_phone'] as String?) ?? '',
+        address: (map['address'] as String?) ?? '',
+        age: map['age'] as int?,
         halaqaId: map['halaqa_id'] as String,
         riwayah: map['riwayah'] as String,
         currentJuz: (map['current_juz'] as int?) ?? 1,
@@ -381,6 +397,10 @@ class DatabaseHelper {
         id TEXT PRIMARY KEY,
         code TEXT NOT NULL,
         name TEXT NOT NULL,
+        father_name TEXT NOT NULL DEFAULT '',
+        father_phone TEXT NOT NULL DEFAULT '',
+        address TEXT NOT NULL DEFAULT '',
+        age INTEGER,
         halaqa_id TEXT NOT NULL,
         riwayah TEXT NOT NULL,
         current_juz INTEGER NOT NULL DEFAULT 1,
@@ -437,12 +457,12 @@ class DatabaseHelper {
     });
 
     final initialStudents = [
-      Student(id: 'student-1', code: '01', name: 'عمر عبد الله المنصوري', halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 5, currentSurah: 4, currentAyah: 31),
-      Student(id: 'student-2', code: '02', name: 'يوسف أحمد التونسي', halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 8, currentSurah: 7, currentAyah: 42),
-      Student(id: 'student-3', code: '03', name: 'حمزة خالد الفاسي', halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 11, currentSurah: 10, currentAyah: 25),
-      Student(id: 'student-4', code: '04', name: 'طارق زياد الليبي', halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 3, currentSurah: 3, currentAyah: 52),
-      Student(id: 'student-5', code: '05', name: 'عبد الرحمن محمد الصالح', halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 15, currentSurah: 18, currentAyah: 18),
-      Student(id: 'student-6', code: '06', name: 'بلال أنس التواتي', halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 6, currentSurah: 5, currentAyah: 12),
+      Student(id: 'student-1', code: '01', name: 'عمر عبد الله المنصوري', fatherName: 'عبد الله المنصوري', fatherPhone: '0551 23 45 67', address: 'حي النور - شارع الاستقلال', age: 12, halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 5, currentSurah: 4, currentAyah: 31),
+      Student(id: 'student-2', code: '02', name: 'يوسف أحمد التونسي', fatherName: 'أحمد التونسي', fatherPhone: '0552 84 19 30', address: 'حي السلام - عمارة 4', age: 14, halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 8, currentSurah: 7, currentAyah: 42),
+      Student(id: 'student-3', code: '03', name: 'حمزة خالد الفاسي', fatherName: 'خالد الفاسي', fatherPhone: '0661 47 92 18', address: 'وسط المدينة - نهج المسجد', age: 11, halaqaId: 'halaqa-fajr', riwayah: 'قالون', currentJuz: 11, currentSurah: 10, currentAyah: 25),
+      Student(id: 'student-4', code: '04', name: 'طارق زياد الليبي', fatherName: 'زياد الليبي', fatherPhone: '0770 31 65 44', address: 'حي الزهور - رقم 18', age: 13, halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 3, currentSurah: 3, currentAyah: 52),
+      Student(id: 'student-5', code: '05', name: 'عبد الرحمن محمد الصالح', fatherName: 'محمد الصالح', fatherPhone: '0554 90 12 75', address: 'الحي الغربي - بجانب المدرسة', age: 15, halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 15, currentSurah: 18, currentAyah: 18),
+      Student(id: 'student-6', code: '06', name: 'بلال أنس التواتي', fatherName: 'أنس التواتي', fatherPhone: '0663 58 20 91', address: 'حي البستان - شارع 12', age: 10, halaqaId: 'halaqa-asr', riwayah: 'قالون', currentJuz: 6, currentSurah: 5, currentAyah: 12),
     ];
 
     for (final s in initialStudents) {
@@ -635,7 +655,9 @@ import 'surahs_screen.dart';
 enum StudentSortMode { defaultOrder, mostErrors, leastErrors, alphabetical }
 
 class StudentsScreen extends StatefulWidget {
-  const StudentsScreen({super.key});
+  final VoidCallback? onToggleTheme;
+  final bool isDark;
+  const StudentsScreen({super.key, this.onToggleTheme, this.isDark = true});
 
   @override
   State<StudentsScreen> createState() => _StudentsScreenState();
@@ -708,10 +730,15 @@ class _StudentsScreenState extends State<StudentsScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF131313),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF131313),
         elevation: 0,
         title: const Text('قائمة الطلاب', style: TextStyle(fontWeight: FontWeight.w700)),
         actions: [
+          if (widget.onToggleTheme != null)
+            IconButton(
+              icon: Icon(widget.isDark ? Icons.wb_sunny_outlined : Icons.dark_mode_outlined),
+              tooltip: widget.isDark ? 'رؤية نهار' : 'رؤية ليل',
+              onPressed: widget.onToggleTheme,
+            ),
           IconButton(icon: const Icon(Icons.add), onPressed: _showAddStudentDialog),
           const Padding(
             padding: EdgeInsets.only(left: 12),
@@ -825,6 +852,17 @@ class _StudentsScreenState extends State<StudentsScreen> {
                         ),
                       ],
                     ),
+                    subtitle: Text(
+                      [
+                        if (s.fatherName.isNotEmpty) 'الأب: \${s.fatherName}',
+                        if (s.age != null) '\${s.age} سنة',
+                        if (s.fatherPhone.isNotEmpty) s.fatherPhone,
+                        if (s.address.isNotEmpty) s.address,
+                      ].join(' · '),
+                      style: const TextStyle(fontSize: 11, color: Color(0xFF87948D)),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline, color: Color(0xFF87948D), size: 20),
                       onPressed: () async {
@@ -880,28 +918,43 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   Future<void> _showAddStudentDialog() async {
-    final controller = TextEditingController();
+    final nameCtrl = TextEditingController();
+    final fatherCtrl = TextEditingController();
+    final phoneCtrl = TextEditingController();
+    final addressCtrl = TextEditingController();
+    final ageCtrl = TextEditingController();
     String halaqaId = _halaqas.isNotEmpty ? _halaqas.first.id : 'halaqa-fajr';
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1F),
         title: const Text('إضافة طالب جديد'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(hintText: 'اسم الطالب الثلاثي'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'اسم الطالب')),
+              TextField(controller: fatherCtrl, decoration: const InputDecoration(labelText: 'اسم الأب')),
+              TextField(controller: phoneCtrl, keyboardType: TextInputType.phone, decoration: const InputDecoration(labelText: 'رقم هاتف الأب')),
+              TextField(controller: addressCtrl, decoration: const InputDecoration(labelText: 'العنوان')),
+              TextField(controller: ageCtrl, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'العمر')),
+            ],
+          ),
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('إلغاء')),
           FilledButton(
             onPressed: () async {
-              final name = controller.text.trim();
+              final name = nameCtrl.text.trim();
               if (name.isEmpty) return;
               final code = (_students.length + 1).toString().padLeft(2, '0');
               await DatabaseHelper.instance.upsertStudent(Student(
                 id: 'student-\${DateTime.now().millisecondsSinceEpoch}',
                 code: code,
                 name: name,
+                fatherName: fatherCtrl.text.trim(),
+                fatherPhone: phoneCtrl.text.trim(),
+                address: addressCtrl.text.trim(),
+                age: int.tryParse(ageCtrl.text.trim()),
                 halaqaId: halaqaId,
                 riwayah: 'قالون',
               ));
@@ -1493,8 +1546,21 @@ void main() {
   runApp(const SanadSlateApp());
 }
 
-class SanadSlateApp extends StatelessWidget {
+class SanadSlateApp extends StatefulWidget {
   const SanadSlateApp({super.key});
+
+  @override
+  State<SanadSlateApp> createState() => _SanadSlateAppState();
+}
+
+class _SanadSlateAppState extends State<SanadSlateApp> {
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1508,7 +1574,19 @@ class SanadSlateApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData.dark().copyWith(
+      themeMode: _themeMode,
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: const Color(0xFFF4F6F5),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF006C52),
+          onPrimary: Colors.white,
+          surface: Colors.white,
+          onSurface: Color(0xFF141716),
+          tertiary: Color(0xFFB45309),
+          error: Color(0xFFB91C1C),
+        ),
+      ),
+      darkTheme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF131313),
         colorScheme: const ColorScheme.dark(
           primary: Color(0xFF6FDAB5),
@@ -1519,13 +1597,18 @@ class SanadSlateApp extends StatelessWidget {
           error: Color(0xFFFFB4AB),
         ),
       ),
-      home: const HomeShell(),
+      home: HomeShell(
+        isDark: _themeMode == ThemeMode.dark,
+        onToggleTheme: _toggleTheme,
+      ),
     );
   }
 }
 
 class HomeShell extends StatefulWidget {
-  const HomeShell({super.key});
+  final bool isDark;
+  final VoidCallback onToggleTheme;
+  const HomeShell({super.key, required this.isDark, required this.onToggleTheme});
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -1534,20 +1617,19 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _tabIndex = 0;
 
-  final List<Widget> _pages = const [
-    StudentsScreen(),
-    AttendanceScreen(),
-    SettingsScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      StudentsScreen(isDark: widget.isDark, onToggleTheme: widget.onToggleTheme),
+      const AttendanceScreen(),
+      const SettingsScreen(),
+    ];
+
     return Scaffold(
-      body: _pages[_tabIndex],
+      body: pages[_tabIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _tabIndex,
-        backgroundColor: const Color(0xFF1B1B1C),
-        indicatorColor: const Color(0xFF6FDAB5).withOpacity(0.16),
+        indicatorColor: Theme.of(context).colorScheme.primary.withOpacity(0.16),
         onDestinationSelected: (i) => setState(() => _tabIndex = i),
         destinations: const [
           NavigationDestination(icon: Icon(Icons.people_outline), label: 'الطلاب'),

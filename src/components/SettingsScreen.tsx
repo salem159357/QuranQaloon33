@@ -8,8 +8,10 @@ import {
   FileArchive,
   HardDrive,
   Loader2,
+  Moon,
   RotateCcw,
   Share2,
+  Sun,
   Upload,
 } from 'lucide-react';
 import {
@@ -206,57 +208,100 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#131313] text-[#e5e2e1]">
-      <header className="h-14 px-4 flex items-center justify-between border-b border-[#202020] shrink-0">
-        <h1 className="text-[20px] font-bold text-[#e5e2e1]">الإعدادات</h1>
+    <div className="flex flex-col h-full bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1]">
+      <header className="h-14 px-4 flex items-center justify-between border-b border-[#d9e0dd] dark:border-[#202020] shrink-0">
+        <h1 className="text-[20px] font-bold text-[#141716] dark:text-[#e5e2e1]">
+          الإعدادات
+        </h1>
       </header>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-5 pb-8">
+        {/* App Day / Night Mode Selector */}
+        <section className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-4 space-y-3">
+          <h2 className="text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5]">
+            مظهر التطبيق (رؤية نهار / ليل)
+          </h2>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => onUpdateSettings({ appTheme: 'light' })}
+              className={`h-11 rounded-xl text-[13px] font-semibold border flex items-center justify-center gap-2 transition-colors ${
+                settings.appTheme === 'light'
+                  ? 'bg-[#006c52] text-white border-[#006c52]'
+                  : 'bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] border-[#d5deda] dark:border-[#2f2f2f]'
+              }`}
+            >
+              <Sun className="w-4 h-4" />
+              <span>رؤية نهار (فاتح)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onUpdateSettings({ appTheme: 'dark' })}
+              className={`h-11 rounded-xl text-[13px] font-semibold border flex items-center justify-center gap-2 transition-colors ${
+                settings.appTheme === 'dark'
+                  ? 'bg-[#6fdab5] text-[#002117] border-[#6fdab5] font-bold'
+                  : 'bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] border-[#d5deda] dark:border-[#2f2f2f]'
+              }`}
+            >
+              <Moon className="w-4 h-4" />
+              <span>رؤية ليل (داكن)</span>
+            </button>
+          </div>
+        </section>
+
         {/* SQLite On-Device Database Management */}
-        <section className="bg-[#1b1b1c] border border-[#2a2a2a] rounded-xl p-4 space-y-4">
+        <section className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-4 space-y-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-[14px] font-bold text-[#6fdab5] flex items-center gap-2">
+            <h2 className="text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5] flex items-center gap-2">
               <Database className="w-4 h-4" />
               <span>قاعدة بيانات SQLite على الجهاز</span>
             </h2>
-            <span className="font-mono-metric text-[11px] text-[#a0a0a0]">
+            <span className="font-mono-metric text-[11px] text-[#52605a] dark:text-[#a0a0a0]">
               {formatKb(dbStats?.sizeBytes)}
             </span>
           </div>
 
           {dbStats && (
             <div className="grid grid-cols-4 gap-2 text-center">
-              <div className="bg-[#131314] border border-[#252528] rounded-lg py-2 px-1">
-                <p className="font-mono-metric text-[14px] font-bold text-[#e5e2e1]">
+              <div className="bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#252528] rounded-lg py-2 px-1">
+                <p className="font-mono-metric text-[14px] font-bold text-[#141716] dark:text-[#e5e2e1]">
                   {dbStats.studentsCount}
                 </p>
-                <p className="text-[10px] text-[#87948d]">الطلاب</p>
+                <p className="text-[10px] text-[#52605a] dark:text-[#87948d]">
+                  الطلاب
+                </p>
               </div>
-              <div className="bg-[#131314] border border-[#252528] rounded-lg py-2 px-1">
-                <p className="font-mono-metric text-[14px] font-bold text-[#6fdab5]">
+              <div className="bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#252528] rounded-lg py-2 px-1">
+                <p className="font-mono-metric text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5]">
                   {dbStats.attendanceCount}
                 </p>
-                <p className="text-[10px] text-[#87948d]">الحضور</p>
+                <p className="text-[10px] text-[#52605a] dark:text-[#87948d]">
+                  الحضور
+                </p>
               </div>
-              <div className="bg-[#131314] border border-[#252528] rounded-lg py-2 px-1">
-                <p className="font-mono-metric text-[14px] font-bold text-[#f5bd6a]">
+              <div className="bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#252528] rounded-lg py-2 px-1">
+                <p className="font-mono-metric text-[14px] font-bold text-[#b45309] dark:text-[#f5bd6a]">
                   {dbStats.errorsCount}
                 </p>
-                <p className="text-[10px] text-[#87948d]">الأخطاء</p>
+                <p className="text-[10px] text-[#52605a] dark:text-[#87948d]">
+                  الأخطاء
+                </p>
               </div>
-              <div className="bg-[#131314] border border-[#252528] rounded-lg py-2 px-1">
-                <p className="font-mono-metric text-[14px] font-bold text-[#bdcac2]">
+              <div className="bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#252528] rounded-lg py-2 px-1">
+                <p className="font-mono-metric text-[14px] font-bold text-[#3c4843] dark:text-[#bdcac2]">
                   {dbStats.tasksCount}
                 </p>
-                <p className="text-[10px] text-[#87948d]">الخطط</p>
+                <p className="text-[10px] text-[#52605a] dark:text-[#87948d]">
+                  الخطط
+                </p>
               </div>
             </div>
           )}
 
           {/* Date Range Selector */}
-          <div className="space-y-2 pt-1 border-t border-[#262628]">
+          <div className="space-y-2 pt-2 border-t border-[#e4eae7] dark:border-[#262628]">
             <div className="flex items-center justify-between flex-wrap gap-2">
-              <span className="text-[12px] font-semibold text-[#e5e2e1]">
+              <span className="text-[12px] font-semibold text-[#141716] dark:text-[#e5e2e1]">
                 المدة المختارة للتصدير والإرسال والتوريد:
               </span>
               <div className="flex items-center gap-1">
@@ -273,7 +318,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                       setStartDate(offsetDaysISO(preset.days));
                       setEndDate(offsetDaysISO(0));
                     }}
-                    className="px-2 py-1 rounded-md bg-[#242426] hover:bg-[#2f2f32] text-[11px] text-[#bdcac2]"
+                    className="px-2 py-1 rounded-md bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2f2f32] text-[11px] text-[#3c4843] dark:text-[#bdcac2]"
                   >
                     {preset.label}
                   </button>
@@ -283,25 +328,25 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   من تاريخ
                 </label>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full h-10 bg-[#131314] border border-[#2f2f33] focus:border-[#6fdab5] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#e5e2e1] outline-none"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#2f2f33] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#141716] dark:text-[#e5e2e1] outline-none"
                 />
               </div>
               <div>
-                <label className="block text-[11px] text-[#a0a0a0] mb-1">
+                <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1">
                   إلى تاريخ
                 </label>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full h-10 bg-[#131314] border border-[#2f2f33] focus:border-[#6fdab5] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#e5e2e1] outline-none"
+                  className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131314] border border-[#d5deda] dark:border-[#2f2f33] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-lg px-2.5 font-mono-metric text-[12px] text-[#141716] dark:text-[#e5e2e1] outline-none"
                 />
               </div>
             </div>
@@ -309,7 +354,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
           {/* Import Mode Selector */}
           <div className="space-y-1.5">
-            <span className="block text-[11px] text-[#a0a0a0]">
+            <span className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0]">
               طريقة التوريد عند استيراد ملف (.sqlite / .db):
             </span>
             <div className="grid grid-cols-2 gap-2">
@@ -318,8 +363,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 onClick={() => setImportMode('merge_range')}
                 className={`h-9 rounded-lg text-[12px] font-semibold border transition-colors ${
                   importMode === 'merge_range'
-                    ? 'bg-[#2a3f37] text-[#6fdab5] border-[#6fdab5]/50'
-                    : 'bg-[#131314] text-[#a0a0a0] border-[#2d2d30]'
+                    ? 'bg-[#e4f5ee] dark:bg-[#2a3f37] text-[#00513d] dark:text-[#6fdab5] border-[#006c52]/40 dark:border-[#6fdab5]/50'
+                    : 'bg-[#f4f6f5] dark:bg-[#131314] text-[#52605a] dark:text-[#a0a0a0] border-[#d5deda] dark:border-[#2d2d30]'
                 }`}
               >
                 دمج ضمن المدة المختارة
@@ -329,8 +374,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 onClick={() => setImportMode('replace')}
                 className={`h-9 rounded-lg text-[12px] font-semibold border transition-colors ${
                   importMode === 'replace'
-                    ? 'bg-[#2a3f37] text-[#6fdab5] border-[#6fdab5]/50'
-                    : 'bg-[#131314] text-[#a0a0a0] border-[#2d2d30]'
+                    ? 'bg-[#e4f5ee] dark:bg-[#2a3f37] text-[#00513d] dark:text-[#6fdab5] border-[#006c52]/40 dark:border-[#6fdab5]/50'
+                    : 'bg-[#f4f6f5] dark:bg-[#131314] text-[#52605a] dark:text-[#a0a0a0] border-[#d5deda] dark:border-[#2d2d30]'
                 }`}
               >
                 استبدال القاعدة بالكامل
@@ -343,16 +388,16 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <button
               type="button"
               onClick={handleSaveLocally}
-              className="h-11 rounded-xl bg-[#242426] hover:bg-[#2d2d30] border border-[#353538] text-[13px] font-semibold text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
+              className="h-11 rounded-xl bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2d2d30] border border-[#d5deda] dark:border-[#353538] text-[13px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
             >
-              <HardDrive className="w-4 h-4 text-[#6fdab5]" />
+              <HardDrive className="w-4 h-4 text-[#006c52] dark:text-[#6fdab5]" />
               <span>حفظ</span>
             </button>
 
             <button
               type="button"
               onClick={handleExport}
-              className="h-11 rounded-xl bg-[#6fdab5] hover:bg-[#8cf6d0] text-[#002117] text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
+              className="h-11 rounded-xl bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] text-white dark:text-[#002117] text-[13px] font-bold flex items-center justify-center gap-1.5 transition-colors"
             >
               <Download className="w-4 h-4" />
               <span>تصدير</span>
@@ -361,18 +406,18 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <button
               type="button"
               onClick={handleSendShare}
-              className="h-11 rounded-xl bg-[#242426] hover:bg-[#2d2d30] border border-[#353538] text-[13px] font-semibold text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
+              className="h-11 rounded-xl bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2d2d30] border border-[#d5deda] dark:border-[#353538] text-[13px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
             >
-              <Share2 className="w-4 h-4 text-[#f5bd6a]" />
+              <Share2 className="w-4 h-4 text-[#b45309] dark:text-[#f5bd6a]" />
               <span>إرسال</span>
             </button>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="h-11 rounded-xl bg-[#242426] hover:bg-[#2d2d30] border border-[#353538] text-[13px] font-semibold text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
+              className="h-11 rounded-xl bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242426] dark:hover:bg-[#2d2d30] border border-[#d5deda] dark:border-[#353538] text-[13px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center justify-center gap-1.5 transition-colors"
             >
-              <Upload className="w-4 h-4 text-[#6fdab5]" />
+              <Upload className="w-4 h-4 text-[#006c52] dark:text-[#6fdab5]" />
               <span>توريد</span>
             </button>
             <input
@@ -388,8 +433,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <div
               className={`rounded-lg px-3 py-2 text-[12px] font-medium ${
                 dbFeedback.type === 'success'
-                  ? 'bg-[#162922] border border-[#2c5a3f] text-[#8cf6d0]'
-                  : 'bg-[#3c1418] border border-[#7c272f] text-[#ffdad6]'
+                  ? 'bg-[#e4f5ee] dark:bg-[#162922] border border-[#b7e2d1] dark:border-[#2c5a3f] text-[#00513d] dark:text-[#8cf6d0]'
+                  : 'bg-[#fde8ea] dark:bg-[#3c1418] border border-[#f5bfc4] dark:border-[#7c272f] text-[#9b1c26] dark:text-[#ffdad6]'
               }`}
             >
               {dbFeedback.message}
@@ -398,29 +443,31 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         </section>
 
         {/* Teacher Profile */}
-        <section className="bg-[#1b1b1c] border border-[#2a2a2a] rounded-xl p-4 space-y-3">
-          <h2 className="text-[14px] font-bold text-[#6fdab5]">بيانات المعلم</h2>
+        <section className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-4 space-y-3">
+          <h2 className="text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5]">
+            بيانات المعلم
+          </h2>
           <div>
-            <label className="block text-[11px] text-[#a0a0a0] mb-1.5">
+            <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-1.5">
               اسم الشيخ / المشرف
             </label>
             <input
               type="text"
               value={settings.teacherName}
               onChange={(e) => onUpdateSettings({ teacherName: e.target.value })}
-              className="w-full h-10 bg-[#131313] border border-[#2f2f2f] focus:border-[#6fdab5] rounded-lg px-3 text-[14px] text-[#e5e2e1] outline-none"
+              className="w-full h-10 bg-[#f4f6f5] dark:bg-[#131313] border border-[#d5deda] dark:border-[#2f2f2f] focus:border-[#006c52] dark:focus:border-[#6fdab5] rounded-lg px-3 text-[14px] text-[#141716] dark:text-[#e5e2e1] outline-none"
             />
           </div>
         </section>
 
         {/* Riwayah & Mushaf Appearance */}
-        <section className="bg-[#1b1b1c] border border-[#2a2a2a] rounded-xl p-4 space-y-4">
-          <h2 className="text-[14px] font-bold text-[#6fdab5]">
+        <section className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-4 space-y-4">
+          <h2 className="text-[14px] font-bold text-[#006c52] dark:text-[#6fdab5]">
             تفضيلات المصحف والرواية
           </h2>
 
           <div>
-            <label className="block text-[11px] text-[#a0a0a0] mb-2">
+            <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-2">
               الرواية الافتراضية للطلاب الجدد
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -431,8 +478,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   onClick={() => onUpdateSettings({ defaultRiwayah: r })}
                   className={`h-10 rounded-lg text-[13px] font-semibold border transition-colors ${
                     settings.defaultRiwayah === r
-                      ? 'bg-[#6fdab5] text-[#002117] border-[#6fdab5]'
-                      : 'bg-[#131313] text-[#e5e2e1] border-[#2f2f2f] hover:bg-[#242425]'
+                      ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] border-[#006c52] dark:border-[#6fdab5]'
+                      : 'bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] border-[#d5deda] dark:border-[#2f2f2f] hover:bg-[#eef2f0] dark:hover:bg-[#242425]'
                   }`}
                 >
                   {r}
@@ -442,7 +489,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           </div>
 
           <div>
-            <label className="block text-[11px] text-[#a0a0a0] mb-2">
+            <label className="block text-[11px] text-[#52605a] dark:text-[#a0a0a0] mb-2">
               مظهر صفحة المصحف
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -451,8 +498,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 onClick={() => onUpdateSettings({ mushafTheme: 'parchment' })}
                 className={`h-10 rounded-lg text-[13px] font-semibold border transition-colors ${
                   settings.mushafTheme === 'parchment'
-                    ? 'bg-[#6fdab5] text-[#002117] border-[#6fdab5]'
-                    : 'bg-[#131313] text-[#e5e2e1] border-[#2f2f2f]'
+                    ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] border-[#006c52] dark:border-[#6fdab5]'
+                    : 'bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] border-[#d5deda] dark:border-[#2f2f2f]'
                 }`}
               >
                 ورقي فاتح (الافتراضي)
@@ -462,8 +509,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 onClick={() => onUpdateSettings({ mushafTheme: 'slate' })}
                 className={`h-10 rounded-lg text-[13px] font-semibold border transition-colors ${
                   settings.mushafTheme === 'slate'
-                    ? 'bg-[#6fdab5] text-[#002117] border-[#6fdab5]'
-                    : 'bg-[#131313] text-[#e5e2e1] border-[#2f2f2f]'
+                    ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] border-[#006c52] dark:border-[#6fdab5]'
+                    : 'bg-[#f4f6f5] dark:bg-[#131313] text-[#141716] dark:text-[#e5e2e1] border-[#d5deda] dark:border-[#2f2f2f]'
                 }`}
               >
                 داكن مريح للعين
@@ -473,8 +520,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
         </section>
 
         {/* Flutter Export & Reset */}
-        <section className="bg-[#1b1b1c] border border-[#2a2a2a] rounded-xl p-4 space-y-3">
-          <h2 className="text-[14px] font-bold text-[#e5e2e1]">
+        <section className="bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#2a2a2a] rounded-xl p-4 space-y-3">
+          <h2 className="text-[14px] font-bold text-[#141716] dark:text-[#e5e2e1]">
             مشروع Flutter الكامل والبيانات
           </h2>
 
@@ -482,7 +529,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             type="button"
             disabled={isZipping}
             onClick={handleDownloadFlutterZip}
-            className="w-full h-11 rounded-lg bg-[#6fdab5] hover:bg-[#8cf6d0] disabled:opacity-50 text-[#002117] px-4 text-[13px] font-bold flex items-center justify-between transition-colors"
+            className="w-full h-11 rounded-lg bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] disabled:opacity-50 text-white dark:text-[#002117] px-4 text-[13px] font-bold flex items-center justify-between transition-colors"
           >
             <span className="flex items-center gap-2">
               {isZipping ? (
@@ -500,13 +547,15 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           <button
             type="button"
             onClick={() => setShowFlutterModal(true)}
-            className="w-full h-11 rounded-lg bg-[#242425] hover:bg-[#2d2d2f] border border-[#353535] px-4 text-[13px] font-semibold text-[#e5e2e1] flex items-center justify-between transition-colors"
+            className="w-full h-11 rounded-lg bg-[#eef2f0] hover:bg-[#e1e7e4] dark:bg-[#242425] dark:hover:bg-[#2d2d2f] border border-[#d5deda] dark:border-[#353535] px-4 text-[13px] font-semibold text-[#141716] dark:text-[#e5e2e1] flex items-center justify-between transition-colors"
           >
             <span className="flex items-center gap-2">
-              <Code2 className="w-4 h-4 text-[#6fdab5]" />
+              <Code2 className="w-4 h-4 text-[#006c52] dark:text-[#6fdab5]" />
               <span>استعراض ونسخ ملفات كود Flutter (Dart)</span>
             </span>
-            <span className="text-[11px] text-[#6fdab5]">Dart 3</span>
+            <span className="text-[11px] text-[#006c52] dark:text-[#6fdab5]">
+              Dart 3
+            </span>
           </button>
 
           <button
@@ -518,7 +567,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 message: 'تمت استعادة البيانات الافتراضية في قاعدة بيانات SQLite.',
               });
             }}
-            className="w-full h-11 rounded-lg bg-[#3c1418]/50 hover:bg-[#3c1418] border border-[#7c272f]/60 px-4 text-[13px] font-semibold text-[#ffb4ab] flex items-center justify-center gap-2 transition-colors"
+            className="w-full h-11 rounded-lg bg-[#fde8ea] hover:bg-[#fad5d9] dark:bg-[#3c1418]/50 dark:hover:bg-[#3c1418] border border-[#f5bfc4] dark:border-[#7c272f]/60 px-4 text-[13px] font-semibold text-[#9b1c26] dark:text-[#ffb4ab] flex items-center justify-center gap-2 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             <span>استعادة البيانات الافتراضية</span>
@@ -528,10 +577,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
 
       {/* Flutter Code Export Modal */}
       {showFlutterModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-[#1b1b1c] border border-[#353535] rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[88vh]">
-            <div className="px-4 py-3 border-b border-[#2a2a2a] flex items-center justify-between gap-2 flex-wrap">
-              <h3 className="text-[15px] font-bold text-[#e5e2e1]">
+        <div className="fixed inset-0 z-50 bg-black/50 dark:bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl bg-white dark:bg-[#1b1b1c] border border-[#d5deda] dark:border-[#353535] rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[88vh]">
+            <div className="px-4 py-3 border-b border-[#e4eae7] dark:border-[#2a2a2a] flex items-center justify-between gap-2 flex-wrap">
+              <h3 className="text-[15px] font-bold text-[#141716] dark:text-[#e5e2e1]">
                 كود مشروع Flutter الكامل (Sanad Slate)
               </h3>
               <div className="flex items-center gap-2">
@@ -539,7 +588,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   type="button"
                   disabled={isZipping}
                   onClick={handleDownloadFlutterZip}
-                  className="px-3 py-1.5 rounded-lg bg-[#6fdab5] hover:bg-[#8cf6d0] text-[#002117] text-[12px] font-bold flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg bg-[#006c52] hover:bg-[#005842] dark:bg-[#6fdab5] dark:hover:bg-[#8cf6d0] text-white dark:text-[#002117] text-[12px] font-bold flex items-center gap-1.5"
                 >
                   <FileArchive className="w-3.5 h-3.5" />
                   <span>تحميل ZIP</span>
@@ -547,7 +596,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowFlutterModal(false)}
-                  className="px-3 py-1.5 rounded-lg bg-[#2a2a2a] text-[12px] text-[#e5e2e1]"
+                  className="px-3 py-1.5 rounded-lg bg-[#eef2f0] dark:bg-[#2a2a2a] text-[12px] text-[#141716] dark:text-[#e5e2e1]"
                 >
                   إغلاق
                 </button>
@@ -563,8 +612,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                     onClick={() => setActiveFilePath(file.path)}
                     className={`px-3 py-1.5 rounded-lg font-mono-metric text-[11px] whitespace-nowrap shrink-0 ${
                       activeFilePath === file.path
-                        ? 'bg-[#6fdab5] text-[#002117] font-bold'
-                        : 'bg-[#262627] text-[#bdcac2] hover:text-[#e5e2e1]'
+                        ? 'bg-[#006c52] dark:bg-[#6fdab5] text-white dark:text-[#002117] font-bold'
+                        : 'bg-[#eef2f0] dark:bg-[#262627] text-[#3c4843] dark:text-[#bdcac2] hover:text-[#141716] dark:hover:text-[#e5e2e1]'
                     }`}
                   >
                     {file.label}
@@ -575,7 +624,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               <button
                 type="button"
                 onClick={handleCopy}
-                className="px-3 py-1.5 rounded-lg bg-[#242425] border border-[#383838] text-[12px] text-[#6fdab5] flex items-center gap-1.5 shrink-0"
+                className="px-3 py-1.5 rounded-lg bg-[#eef2f0] dark:bg-[#242425] border border-[#d5deda] dark:border-[#383838] text-[12px] text-[#006c52] dark:text-[#6fdab5] flex items-center gap-1.5 shrink-0"
               >
                 {copied ? (
                   <>
@@ -592,7 +641,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             </div>
 
             <div className="px-4 pt-2">
-              <p dir="ltr" className="font-mono-metric text-[11px] text-[#87948d]">
+              <p dir="ltr" className="font-mono-metric text-[11px] text-[#52605a] dark:text-[#87948d]">
                 sanad_slate_flutter/{activeFilePath}
               </p>
             </div>
@@ -600,7 +649,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <div className="p-4 overflow-auto flex-1">
               <pre
                 dir="ltr"
-                className="p-4 rounded-xl bg-[#0e0e0e] border border-[#2a2a2a] font-mono-metric text-[12px] leading-relaxed text-[#bdcac2] overflow-x-auto"
+                className="p-4 rounded-xl bg-[#f7f9f8] dark:bg-[#0e0e0e] border border-[#d5deda] dark:border-[#2a2a2a] font-mono-metric text-[12px] leading-relaxed text-[#252d2a] dark:text-[#bdcac2] overflow-x-auto"
               >
                 <code>{activeCode}</code>
               </pre>

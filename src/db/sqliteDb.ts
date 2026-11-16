@@ -127,6 +127,10 @@ export function createSchema(db: Database): void {
       id TEXT PRIMARY KEY,
       code TEXT NOT NULL,
       name TEXT NOT NULL,
+      father_name TEXT NOT NULL DEFAULT '',
+      father_phone TEXT NOT NULL DEFAULT '',
+      address TEXT NOT NULL DEFAULT '',
+      age INTEGER,
       halaqa_id TEXT NOT NULL,
       riwayah TEXT NOT NULL,
       current_juz INTEGER NOT NULL DEFAULT 1,
@@ -170,6 +174,24 @@ export function createSchema(db: Database): void {
       value TEXT NOT NULL
     );
   `);
+
+  // Safe migration for existing SQLite databases created before adding father/address/age columns
+  const colsRes = db.exec('PRAGMA table_info(students)');
+  const existingCols = new Set(
+    (colsRes[0]?.values ?? []).map((row) => String(row[1]))
+  );
+  if (!existingCols.has('father_name')) {
+    db.run("ALTER TABLE students ADD COLUMN father_name TEXT NOT NULL DEFAULT ''");
+  }
+  if (!existingCols.has('father_phone')) {
+    db.run("ALTER TABLE students ADD COLUMN father_phone TEXT NOT NULL DEFAULT ''");
+  }
+  if (!existingCols.has('address')) {
+    db.run("ALTER TABLE students ADD COLUMN address TEXT NOT NULL DEFAULT ''");
+  }
+  if (!existingCols.has('age')) {
+    db.run('ALTER TABLE students ADD COLUMN age INTEGER');
+  }
 }
 
 export function seedDatabase(db: Database): void {
@@ -184,7 +206,7 @@ export function seedDatabase(db: Database): void {
     insertHalaqa.free();
 
     const insertStudent = db.prepare(
-      'INSERT OR REPLACE INTO students (id, code, name, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT OR REPLACE INTO students (id, code, name, father_name, father_phone, address, age, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
     const insertError = db.prepare(
       'INSERT OR REPLACE INTO ayah_errors (student_id, surah_number, ayah_number, hifz, tajweed, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
@@ -196,6 +218,10 @@ export function seedDatabase(db: Database): void {
         s.id,
         s.code,
         s.name,
+        s.fatherName,
+        s.fatherPhone,
+        s.address,
+        s.age,
         s.halaqaId,
         s.riwayah,
         s.currentJuz,
@@ -300,7 +326,7 @@ export function hydrateStateFromDb(db: Database): HydratedState {
 
   const students: Student[] = [];
   const sStmt = db.prepare(
-    'SELECT id, code, name, halaqa_id, riwayah, current_juz, current_surah, current_ayah FROM students ORDER BY code ASC'
+    'SELECT id, code, name, father_name, father_phone, address, age, halaqa_id, riwayah, current_juz, current_surah, current_ayah FROM students ORDER BY code ASC'
   );
   while (sStmt.step()) {
     const row = sStmt.getAsObject();
@@ -309,6 +335,10 @@ export function hydrateStateFromDb(db: Database): HydratedState {
       id,
       code: String(row.code),
       name: String(row.name),
+      fatherName: String(row.father_name ?? ''),
+      fatherPhone: String(row.father_phone ?? ''),
+      address: String(row.address ?? ''),
+      age: row.age !== null && row.age !== undefined ? Number(row.age) : null,
       halaqaId: String(row.halaqa_id),
       riwayah: String(row.riwayah) as Riwayah,
       currentJuz: Number(row.current_juz),
@@ -446,11 +476,15 @@ export class LocalSqliteRepository {
 
   async upsertStudent(student: Student): Promise<void> {
     this.db.run(
-      'INSERT OR REPLACE INTO students (id, code, name, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT OR REPLACE INTO students (id, code, name, father_name, father_phone, address, age, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         student.id,
         student.code,
         student.name,
+        student.fatherName,
+        student.fatherPhone,
+        student.address,
+        student.age,
         student.halaqaId,
         student.riwayah,
         student.currentJuz,
@@ -566,10 +600,6 @@ export class LocalSqliteRepository {
     return this.getState();
   }
 
-  /**
-   * Exports a valid SQLite binary file (.sqlite) containing students, halaqas,
-   * and attendance/errors/tasks filtered to the selected date range [startDate, endDate].
-   */
   exportSqliteForDateRange(startDate: string, endDate: string): Uint8Array {
     const exportDb = new this.sql.Database();
     createSchema(exportDb);
@@ -587,13 +617,17 @@ export class LocalSqliteRepository {
       insH.free();
 
       const insS = exportDb.prepare(
-        'INSERT OR REPLACE INTO students (id, code, name, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT OR REPLACE INTO students (id, code, name, father_name, father_phone, address, age, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
       );
       for (const s of state.students) {
         insS.run([
           s.id,
           s.code,
           s.name,
+          s.fatherName,
+          s.fatherPhone,
+          s.address,
+          s.age,
           s.halaqaId,
           s.riwayah,
           s.currentJuz,
@@ -667,10 +701,6 @@ export class LocalSqliteRepository {
     }
   }
 
-  /**
-   * Imports a .sqlite / .db binary file either by replacing the entire DB
-   * or merging records within the selected date range [startDate, endDate].
-   */
   async importSqliteBytes(
     bytes: Uint8Array,
     mode: 'replace' | 'merge_range',
@@ -698,7 +728,6 @@ export class LocalSqliteRepository {
         };
       }
 
-      // Merge mode within [startDate, endDate]
       let importedAttendance = 0;
       let importedErrors = 0;
 
@@ -713,13 +742,17 @@ export class LocalSqliteRepository {
         insH.free();
 
         const insS = this.db.prepare(
-          'INSERT OR REPLACE INTO students (id, code, name, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+          'INSERT OR REPLACE INTO students (id, code, name, father_name, father_phone, address, age, halaqa_id, riwayah, current_juz, current_surah, current_ayah) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
         for (const s of incoming.students) {
           insS.run([
             s.id,
             s.code,
             s.name,
+            s.fatherName,
+            s.fatherPhone,
+            s.address,
+            s.age,
             s.halaqaId,
             s.riwayah,
             s.currentJuz,
